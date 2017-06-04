@@ -1,201 +1,156 @@
-import pygame
-from pygame.locals import *
-import sys
+# PYTRIS™ Copyright (c) 2017 Jason Kim All Rights Reserved.
+
 import random
-import copy
+import pygame
+from mino import tetrimino
+from pygame.locals import *
 
-BLOCK_SIZE = 30
-FIELD_WIDTH = 12
-FIELD_HEIGHT = 22
-FIELD_NONE = -1
-FIELD_WALL = -2
+pygame.init()
 
-TOP_SPACE = 20
-RIGHT_SPACE = 20
-DOWN_SPACE = 10
-LEFT_SPACE = 20
-WINDOW_WIDTH = FIELD_WIDTH * BLOCK_SIZE + RIGHT_SPACE + LEFT_SPACE
-WINDOW_HEIGHT = FIELD_HEIGHT * BLOCK_SIZE + TOP_SPACE + DOWN_SPACE
+clock = pygame.time.Clock()
+screen = pygame.display.set_mode((300, 374))
+pygame.display.set_caption("PYTRIS™")
 
-framerate = 60  #60fps
-fallFrame = 60
+class ui_variables:
+    # Fonts
+    font_path = "./assets/fonts/OpenSans-Light.ttf"
+    h1 = pygame.font.Font(font_path, 50)
+    h4 = pygame.font.Font(font_path, 20)
+    h5 = pygame.font.Font(font_path, 13)
+    h6 = pygame.font.Font(font_path, 10)
 
-field = [[FIELD_NONE for i in range(FIELD_HEIGHT)] for j in range(FIELD_WIDTH) ]
-for i in range(FIELD_WIDTH):
-    field[i][FIELD_HEIGHT - 1] = FIELD_WALL
-for i in range(FIELD_HEIGHT):
-    field[0][i] = FIELD_WALL
-    field[FIELD_WIDTH - 1][i] = FIELD_WALL
+    #Colors
+    black = (10, 10, 10) #rgb(10, 10, 10)
+    white = (255, 255, 255) #rgb(255, 255, 255)
+    grey_1 = (26, 26, 26) #rgb(26, 26, 26)
+    grey_2 = (35, 35, 35) #rgb(35, 35, 35)
+    navy_1 = (32, 46, 55) #rgb(32, 46, 55)
+    skyblue = (131, 189, 221) #rgb(131, 189, 221)
 
-nextMino = []
+    cyan = (69, 206, 204) #rgb(69, 206, 204)
+    yellow = (246, 227, 90) #rgb(246, 227, 90)
+    pink = (242, 64, 235) #rgb(242, 64, 235)
+    blue = (64, 111, 249) #rgb(64, 111, 249)
+    green = (98, 190, 68) #rgb(98, 190, 68)
+    red = (225, 13, 27) #rgb(225, 13, 27)
+    orange = (253, 189, 53) #rgb(253, 189, 53)
 
-class Pos:
-    def __init__(self,dx,dy):
-        self.x = dx
-        self.y = dy
+# Initial values
+start = False
+done = False
+blink = True
+width, height = 10, 20 # Board width, height
+block_size = 17 # height / width of single block
+matrix = [[0 for x in range(height)] for y in range(width)]
 
-MINO_I = 0
-MINO_T = 1
-MINO_J = 2
-MINO_L = 3
-MINO_S = 4
-MINO_Z = 5
-MINO_O = 6
+def draw_block(x, y, color):
+    pygame.draw.rect(
+        screen,
+        color,
+        Rect(x, y, block_size, block_size)
+    )
+    pygame.draw.rect(
+        screen,
+        ui_variables.grey_1,
+        Rect(x, y, block_size, block_size),
+        1
+    )
 
-class Mino:
-    def __init__(self,r,p1,p2,p3,c):
-        self.rotate = r
-        self.pos = [p1,p2,p3]
-        self.color = c
+def draw_board():
+    pygame.draw.rect(
+        screen,
+        ui_variables.white,
+        Rect(204, 0, 96, 374)
+    )
 
-tetrimino = [Mino(2,Pos(0,-1),Pos(0,1),Pos(0,2),[0,255,255]),   #I
-             Mino(4,Pos(0,-1),Pos(-1,0),Pos(1,0),[128,0,128]),   #T
-             Mino(4,Pos(-1,0),Pos(1,0),Pos(1,1),[0,0,255]),   #J
-             Mino(4,Pos(-1,1),Pos(-1,0),Pos(1,0),[0,0,128]),   #L
-             Mino(2,Pos(-1,0),Pos(0,-1),Pos(1,-1),[0,255,0]),   #S
-             Mino(2,Pos(1,0),Pos(0,-1),Pos(-1,-1),[255,0,0]),   #Z
-             Mino(1,Pos(0,-1),Pos(1,-1),Pos(1,0),[255,255,0]),   #O
-            ]
+    text_hold = ui_variables.h5.render("HOLD", 1, ui_variables.black)
+    text_next = ui_variables.h5.render("NEXT", 1, ui_variables.black)
+    text_score = ui_variables.h5.render("SCORE", 1, ui_variables.black)
 
-class MinoStatus:
+    screen.blit(text_hold, (215, 14))
+    screen.blit(text_next, (215, 114))
+    screen.blit(text_score, (215, 214))
 
-    def __init__(self, t, r, p):
-        self.type = t
-        self.rotate = r
-        self.pos = p
-        print("---Create Status---")
-        print("type=" + str(self.type))
-        print("rotate=" + str(self.rotate))
-        print("pos=" + str(self.pos.x) + ", " + str(self.pos.y))
-        self.updatePos(self.pos,self.rotate)
+    for x in range(width):
+        for y in range(height):
+            dx = 17 + block_size * x
+            dy = 17 + block_size * y
+            draw_block(dx, dy, ui_variables.grey_2)
 
+def draw_mino(x, y, mino, r):
+    if mino == 'I':
+        color = ui_variables.cyan
+        grid = tetrimino.I[r]
+    elif mino == 'J':
+        color = ui_variables.blue
+        grid = tetrimino.J[r]
+    elif mino == 'L':
+        color = ui_variables.orange
+        grid = tetrimino.L[r]
+    elif mino == 'O':
+        color = ui_variables.yellow
+        grid = tetrimino.O[r]
+    elif mino == 'S':
+        color = ui_variables.green
+        grid = tetrimino.S[r]
+    elif mino == 'T':
+        color = ui_variables.pink
+        grid = tetrimino.T[r]
+    elif mino == 'Z':
+        color = ui_variables.red
+        grid = tetrimino.Z[r]
 
-    def getPos(self, p, r):
-        pos = []
-        pos.append(p)
-        for i in range(3):
-            ro = r % tetrimino[self.type].rotate
-            dx = tetrimino[self.type].pos[i].x
-            dy = tetrimino[self.type].pos[i].y
-            for j in range(1, ro+1):
-                tmp = -dy
-                dy = dx
-                dx = tmp
-            pos.append(Pos(dx + p.x, dy + p.y))
-        for po in pos:
-            print("getPos:Pos=" + str(po.x) + ", " + str(po.y))
-        print("returnPos")
-        return pos
+    for i in range(4):
+        for j in range(4):
+            dx = 17 + block_size * (x + j)
+            dy = 17 + block_size * (y + i)
+            if grid[i][j] == 1:
+                draw_block(dx, dy, color)
+                matrix[x + j][y + i] = 1
 
-    def canPut(self, gp):
-        bpos = self.getPos(self.pos, self.rotate)
-        for i in gp:
-            for j in bpos:
-                if j.x == i.x and j.y == i.y:
-                    break
-            else:
-                if i.x < 0 or i.x >= FIELD_WIDTH or i.y < 0 or i.y >= FIELD_HEIGHT or field[i.x][i.y] != FIELD_NONE:
-                    print("DONT PUT")
-                    break
-        else:
-            return True
-        return False
+# Set background color
+screen.fill(ui_variables.white)
+pygame.display.update()
 
-    def updatePos(self, p, r):
-        bpos = self.getPos(self.pos, self.rotate)
-        apos = self.getPos(p, r)
-
-        if self.canPut(apos):
-            if p.x != self.pos.x or p.y != self.pos.y or r != self.rotate:
-                for i in bpos:
-                    field[i.x][i.y] = FIELD_NONE
-
-            for i in apos:
-                field[i.x][i.y] = self.type
-            field[p.x][p.y] = self.type
-            self.rotate = r
-            self.pos = p
-
-def spawn():
-    if len(nextMino) == 0:
-        for i in range(len(tetrimino)):
-            nextMino.append(i)
-        random.shuffle(nextMino)
-    print(nextMino[0])
-    return MinoStatus(nextMino.pop(), 0, Pos(6,2))
-
-def deleteLine():
-    for y in range(FIELD_HEIGHT-1):
-        for x in range(1,FIELD_WIDTH-1):
-            if field[x][y] == FIELD_NONE:
-                break
-        else:
-            for j in reversed(range(y)):
-                print("del:" + str(j))
-                for i in range(FIELD_WIDTH):
-                    field[i][j + 1] = field[i][j]
-            y += 1
-def main():
-    pygame.init()
-    screen = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
-    clock = pygame.time.Clock()
-    pygame.display.set_caption("PyTetris")
-    frame = 0
-    keyFrame = 0
-    spinFrame = 0
-    currentMino = spawn()
-    while(1):
-        clock.tick(framerate)
-        screen.fill((0,0,0))
-        __draw(screen)
+while not done:
+    if start:
+        screen.fill(ui_variables.grey_1)
+        draw_board()
+        draw_mino(3, 0, 'L', 0)
         pygame.display.update()
-
-        gePos = currentMino.getPos(Pos(currentMino.pos.x, currentMino.pos.y + 1), currentMino.rotate)
-        if not currentMino.canPut(gePos):
-            deleteLine()
-            currentMino = spawn()
-            continue
 
         for event in pygame.event.get():
             if event.type == QUIT:
-                print("END")
-                pygame.quit()
-                sys.exit()
+                done = True
+    else:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                done = True
+            elif event.type == KEYDOWN:
+                if event.key == K_SPACE:
+                    start = True
 
-        if frame >= fallFrame:
-            currentMino.updatePos(Pos(currentMino.pos.x, currentMino.pos.y + 1), currentMino.rotate)
-            frame = 0
+        screen.fill(ui_variables.white)
+        pygame.draw.rect(
+            screen,
+            ui_variables.grey_1,
+            Rect(0, 187, 300, 187)
+        )
 
-        pressed = pygame.key.get_pressed()
-        if keyFrame >= framerate / 10:
-            keyFrame = 0
-            if pressed[K_LEFT]:
-                currentMino.updatePos(Pos(currentMino.pos.x - 1,currentMino.pos.y),currentMino.rotate)
-            if pressed[K_RIGHT]:
-                currentMino.updatePos(Pos(currentMino.pos.x + 1,currentMino.pos.y),currentMino.rotate)
-            if pressed[K_SPACE] and spinFrame >= framerate / 7:
-                currentMino.updatePos(currentMino.pos, currentMino.rotate + 1)
-                spinFrame = 0
-            if pressed[K_DOWN]:
-                currentMino.updatePos(Pos(currentMino.pos.x,currentMino.pos.y+1),currentMino.rotate)
+        title = ui_variables.h1.render("PYTRIS™", 1, ui_variables.grey_1)
+        title_start = ui_variables.h5.render("Press space to start", 1, ui_variables.white)
+        title_info = ui_variables.h6.render("Copyright (c) 2017 Jason Kim All Rights Reserved.", 1, ui_variables.white)
 
-        frame += 1
-        keyFrame += 1
-        spinFrame += 1
-def __draw(sc):
-    for x in range(FIELD_WIDTH):
-        for y in range(FIELD_HEIGHT):
-            dx = LEFT_SPACE + BLOCK_SIZE * x
-            dy = TOP_SPACE + BLOCK_SIZE * y
-            if field[x][y] == FIELD_NONE:
-                pygame.draw.rect(sc,(230,230,230),Rect(dx,dy,BLOCK_SIZE,BLOCK_SIZE))
-                pygame.draw.rect(sc,(150,150,150),Rect(dx,dy,BLOCK_SIZE,BLOCK_SIZE), 1)
-            elif field[x][y] == FIELD_WALL:
-                pygame.draw.rect(sc,(60,60,60),Rect(dx,dy,BLOCK_SIZE,BLOCK_SIZE))
-                pygame.draw.rect(sc,(10,10,10),Rect(dx,dy,BLOCK_SIZE,BLOCK_SIZE), 1)
-            else:
-                t = field[x][y]
-                pygame.draw.rect(sc,(tetrimino[t].color[0],tetrimino[t].color[1],tetrimino[t].color[2]),Rect(dx,dy,BLOCK_SIZE,BLOCK_SIZE))
-                pygame.draw.rect(sc,(10,10,10),Rect(dx,dy,BLOCK_SIZE,BLOCK_SIZE), 1)
-if __name__ == "__main__":
-    main()
+        if blink:
+            screen.blit(title_start, (92, 195))
+            blink = False
+        else:
+            blink = True
+        screen.blit(title, (65, 120))
+        screen.blit(title_info, (40, 335))
+
+        if not start:
+            clock.tick(3)
+            pygame.display.update()
+
+pygame.quit()
