@@ -137,8 +137,6 @@ def is_bottom(x, y, mino, r):
 
     for i in range(4):
         for j in range(4):
-            dx = 17 + block_size * (x + j)
-            dy = 17 + block_size * (y + i)
             if grid[i][j] != 0:
                 if (y + i + 1) > 19:
                     return True
@@ -152,8 +150,6 @@ def is_leftedge(x, y, mino, r):
 
     for i in range(4):
         for j in range(4):
-            dx = 17 + block_size * (x + j)
-            dy = 17 + block_size * (y + i)
             if grid[i][j] != 0:
                 if (x + j - 1) < 0:
                     return True
@@ -167,8 +163,6 @@ def is_rightedge(x, y, mino, r):
 
     for i in range(4):
         for j in range(4):
-            dx = 17 + block_size * (x + j)
-            dy = 17 + block_size * (y + i)
             if grid[i][j] != 0:
                 if (x + j + 1) > 9:
                     return True
@@ -185,12 +179,21 @@ def is_turnable(x, y, mino, r):
 
     for i in range(4):
         for j in range(4):
-            dx = 17 + block_size * (x + j)
-            dy = 17 + block_size * (y + i)
             if grid[i][j] != 0:
                 if (x + j) < 0 or (x + j) > 9 or (y + i) < 0 or (y + i) > 19:
                     return False
                 elif matrix[x + j][y + i] != 0:
+                    return False
+
+    return True
+
+def is_stackable(mino):
+    grid = tetrimino.mino_map[mino - 1][0]
+
+    for i in range(4):
+        for j in range(4):
+            if grid[i][j] != 0:
+                if matrix[3 + j][0 + i] != 0:
                     return False
 
     return True
