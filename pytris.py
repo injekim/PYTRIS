@@ -21,6 +21,7 @@ class ui_variables:
     # Fonts
     font_path = "./assets/fonts/OpenSans-Light.ttf"
     h1 = pygame.font.Font(font_path, 50)
+    h2 = pygame.font.Font(font_path, 30)
     h4 = pygame.font.Font(font_path, 20)
     h5 = pygame.font.Font(font_path, 13)
     h6 = pygame.font.Font(font_path, 10)
@@ -117,8 +118,6 @@ def draw_mino(x, y, mino, r):
 
     for i in range(4):
         for j in range(4):
-            dx = 17 + block_size * (x + j)
-            dy = 17 + block_size * (y + i)
             if grid[i][j] != 0:
                 matrix[x + j][y + i] = grid[i][j]
 
@@ -192,9 +191,9 @@ def is_stackable(mino):
 
     for i in range(4):
         for j in range(4):
-            if grid[i][j] != 0:
-                if matrix[3 + j][0 + i] != 0:
-                    return False
+            print(grid[i][j], matrix[3 + j][i])
+            if grid[i][j] != 0 and matrix[3 + j][i] != 0:
+                return False
 
     return True
 
@@ -202,6 +201,7 @@ def is_stackable(mino):
 blink = True
 start = False
 done = False
+game_over = False
 hold = False
 dx, dy = 3, 0
 rotation = 0
@@ -270,11 +270,15 @@ while not done:
         else:
             draw_mino(dx, dy, mino, rotation)
             draw_board(next_mino, hold_mino, score)
-            mino = next_mino
-            next_mino = randint(1, 7)
-            dx, dy = 3, 0
-            rotation = 0
-            hold = False
+            if is_stackable(next_mino):
+                mino = next_mino
+                next_mino = randint(1, 7)
+                dx, dy = 3, 0
+                rotation = 0
+                hold = False
+            else:
+                start = False
+                game_over = True
 
         # Erase line
         for j in range(20):
@@ -289,6 +293,38 @@ while not done:
                     for i in range(10):
                         matrix[i][k] = matrix[i][k - 1]
                     k -= 1
+
+        pygame.display.update()
+        clock.tick(framerate / 10)
+
+    # Game over screen
+    elif game_over:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                done = True
+            elif event.type == KEYDOWN:
+                if event.key == K_SPACE:
+                    game_over = False
+                    hold = False
+                    dx, dy = 3, 0
+                    rotation = 0
+                    mino = randint(1, 7)
+                    next_mino = randint(1, 7)
+                    hold_mino = -1
+                    score = 0
+                    matrix = [[0 for y in range(height)] for x in range(width)]
+
+        over_text = ui_variables.h2.render("GAME OVER", 1, ui_variables.white)
+        over_start = ui_variables.h5.render("Press space to start", 1, ui_variables.white)
+
+        draw_board(next_mino, hold_mino, score)
+        screen.blit(over_text, (20, 100))
+
+        if blink:
+            screen.blit(over_start, (46, 160))
+            blink = False
+        else:
+            blink = True
 
         pygame.display.update()
         clock.tick(framerate / 10)
@@ -324,5 +360,6 @@ while not done:
         if not start:
             pygame.display.update()
 
-    clock.tick(framerate / 10)
+        clock.tick(framerate / 10)
+
 pygame.quit()
