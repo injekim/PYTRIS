@@ -15,6 +15,7 @@ pygame.init()
 
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((300, 374))
+pygame.time.set_timer ( pygame.USEREVENT , framerate * 10)
 pygame.display.set_caption("PYTRIS™")
 
 class ui_variables:
@@ -191,7 +192,7 @@ def is_stackable(mino):
 
     for i in range(4):
         for j in range(4):
-            print(grid[i][j], matrix[3 + j][i])
+            #print(grid[i][j], matrix[3 + j][i])
             if grid[i][j] != 0 and matrix[3 + j][i] != 0:
                 return False
 
@@ -202,6 +203,7 @@ blink = True
 start = False
 done = False
 game_over = False
+key_press = False
 hold = False
 dx, dy = 3, 0
 rotation = 0
@@ -223,6 +225,45 @@ while not done:
         for event in pygame.event.get():
             if event.type == QUIT:
                 done = True
+            elif event.type == USEREVENT:
+                print("default")
+                # Draw a mino
+                draw_mino(dx, dy, mino, rotation)
+                draw_board(next_mino, hold_mino, score)
+
+                # Erase a mino
+                erase_mino(dx, dy, mino, rotation)
+
+                # Move mino down
+                if not is_bottom(dx, dy, mino, rotation):
+                    dy += 1
+                # Create new mino
+                else:
+                    draw_mino(dx, dy, mino, rotation)
+                    draw_board(next_mino, hold_mino, score)
+                    if is_stackable(next_mino):
+                        mino = next_mino
+                        next_mino = randint(1, 7)
+                        dx, dy = 3, 0
+                        rotation = 0
+                        hold = False
+                    else:
+                        start = False
+                        game_over = True
+
+                # Erase line
+                for j in range(20):
+                    is_full = True
+                    for i in range(10):
+                        if matrix[i][j] == 0:
+                            is_full = False
+                    if is_full:
+                        score += 100
+                        k = j
+                        while k > 0:
+                            for i in range(10):
+                                matrix[i][k] = matrix[i][k - 1]
+                            k -= 1
             elif event.type == KEYDOWN:
                 erase_mino(dx, dy, mino, rotation)
                 if event.key == K_SPACE:
@@ -253,49 +294,11 @@ while not done:
                 elif event.key == K_RIGHT:
                     if not is_rightedge(dx, dy, mino, rotation):
                         dx += 1
+                key_press = True
                 draw_mino(dx, dy, mino, rotation)
                 draw_board(next_mino, hold_mino, score)
 
-        # Draw a mino
-        draw_mino(dx, dy, mino, rotation)
-        draw_board(next_mino, hold_mino, score)
-
-        # Erase a mino
-        erase_mino(dx, dy, mino, rotation)
-
-        # Move mino down
-        if not is_bottom(dx, dy, mino, rotation):
-            dy += 1
-        # Create new mino
-        else:
-            draw_mino(dx, dy, mino, rotation)
-            draw_board(next_mino, hold_mino, score)
-            if is_stackable(next_mino):
-                mino = next_mino
-                next_mino = randint(1, 7)
-                dx, dy = 3, 0
-                rotation = 0
-                hold = False
-            else:
-                start = False
-                game_over = True
-
-        # Erase line
-        for j in range(20):
-            is_full = True
-            for i in range(10):
-                if matrix[i][j] == 0:
-                    is_full = False
-            if is_full:
-                score += 100
-                k = j
-                while k > 0:
-                    for i in range(10):
-                        matrix[i][k] = matrix[i][k - 1]
-                    k -= 1
-
         pygame.display.update()
-        clock.tick(framerate / 10)
 
     # Game over screen
     elif game_over:
@@ -328,7 +331,7 @@ while not done:
                 blink = True
 
             pygame.display.update()
-            clock.tick(framerate / 10)
+            clock.tick(5)
 
     # Start screen
     else:
@@ -360,6 +363,6 @@ while not done:
 
         if not start:
             pygame.display.update()
-            clock.tick(framerate / 10)
+            clock.tick(5)
 
 pygame.quit()

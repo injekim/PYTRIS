@@ -14,7 +14,8 @@ tetris made with pygame
 - Game over when screen is full
 
 ## Things to do
-- Fix slow input register speed
+- Effects for Single, Double, Triple and TETRIS
+- T-spin support
 
 ## Screenshots
 <img src="assets/images/title.png" width="35%">
