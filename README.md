@@ -11,6 +11,8 @@ tetris made with pygame
 - Score display
 - Preventing invalid moves
 - Remove maxed out rows
+- Sound effect for button clicks
+- Sound effect for Single, Double, Triple and TETRIS
 - Game over when screen is full
 
 ## Things to add
