@@ -17,6 +17,6 @@ tetris made with pygame
 - Fix slow input register speed
 
 ## Screenshots
-<img src="assets/images/1.png" width="35%">
-<img src="assets/images/2.png" width="35%">
-<img src="assets/images/3.png" width="35%">
+<img src="assets/images/title.png" width="35%">
+<img src="assets/images/gameplay.png" width="35%">
+<img src="assets/images/gameover.png" width="35%">
