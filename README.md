@@ -18,6 +18,8 @@ Everything seem to work for now
 ## Future plans
 - [T-spin support](https://github.com/k0626089/PYTRIS/wiki/Future-plans#t-spin-support)
 - [Level system](https://github.com/k0626089/PYTRIS/wiki/Future-plans#level-system)
+- [High score system](https://github.com/k0626089/PYTRIS/wiki/Future-plans#high-score-system)
+- [Add ghost](https://github.com/k0626089/PYTRIS/wiki/Future-plans#add-ghost)
 
 ## Screenshots
 <img src="assets/images/title.png" width="35%">
