@@ -23,3 +23,5 @@ Everything seem to work for now
 <img src="assets/images/title.png" width="35%">
 <img src="assets/images/gameplay.png" width="35%">
 <img src="assets/images/gameover.png" width="35%">
+
+More informations on [PYTRIS™ Wiki]https://github.com/k0626089/PYTRIS/wiki
