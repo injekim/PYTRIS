@@ -1,7 +1,7 @@
 # PYTRIS™
 tetris made with pygame
 
-<img src="assets/images/gameplay.gif" width="30%">
+<img src="assets/images/play.gif" width="30%">
 
 ## Working Functions
 - Start screen with blinking text

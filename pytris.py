@@ -226,7 +226,6 @@ while not done:
             if event.type == QUIT:
                 done = True
             elif event.type == USEREVENT:
-                print("default")
                 # Draw a mino
                 draw_mino(dx, dy, mino, rotation)
                 draw_board(next_mino, hold_mino, score)
