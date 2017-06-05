@@ -28,6 +28,8 @@ class ui_variables:
     h6 = pygame.font.Font(font_path, 10)
 
     # Sounds
+    click_sound = pygame.mixer.Sound("assets/sounds/SFX_ButtonUp.wav")
+    move_sound = pygame.mixer.Sound("assets/sounds/SFX_PieceMoveLR.wav")
     drop_sound = pygame.mixer.Sound("assets/sounds/SFX_PieceHardDrop.wav")
     single_sound = pygame.mixer.Sound("assets/sounds/SFX_SpecialLineClearSingle.wav")
     double_sound = pygame.mixer.Sound("assets/sounds/SFX_SpecialLineClearDouble.wav")
@@ -294,6 +296,7 @@ while not done:
                         dy += 1
                 elif event.key == K_LSHIFT:
                     if hold == False:
+                        ui_variables.move_sound.play()
                         if hold_mino == -1:
                             hold_mino = mino
                             mino = next_mino
@@ -305,17 +308,21 @@ while not done:
                         hold = True
                 elif event.key == K_UP:
                     if is_turnable(dx, dy, mino, rotation):
+                        ui_variables.move_sound.play()
                         rotation += 1
                     if rotation == 4:
                         rotation = 0
                 elif event.key == K_DOWN:
                     if not is_bottom(dx, dy, mino, rotation):
+                        ui_variables.move_sound.play()
                         dy += 1
                 elif event.key == K_LEFT:
                     if not is_leftedge(dx, dy, mino, rotation):
+                        ui_variables.move_sound.play()
                         dx -= 1
                 elif event.key == K_RIGHT:
                     if not is_rightedge(dx, dy, mino, rotation):
+                        ui_variables.move_sound.play()
                         dx += 1
                 key_press = True
                 draw_mino(dx, dy, mino, rotation)
@@ -330,6 +337,7 @@ while not done:
                 done = True
             elif event.type == KEYDOWN:
                 if event.key == K_SPACE:
+                    ui_variables.click_sound.play()
                     game_over = False
                     hold = False
                     dx, dy = 3, 0
@@ -363,6 +371,7 @@ while not done:
                 done = True
             elif event.type == KEYDOWN:
                 if event.key == K_SPACE:
+                    ui_variables.click_sound.play()
                     start = True
 
         screen.fill(ui_variables.white)
