@@ -17,6 +17,7 @@ tetris made with pygame
 
 ## Things to add
 - T-spin support
+- Level system
 
 ## Screenshots
 <img src="assets/images/title.png" width="35%">
