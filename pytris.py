@@ -1,9 +1,15 @@
 # PYTRIS™ Copyright (c) 2017 Jason Kim All Rights Reserved.
 
-import random
 import pygame
-from mino import tetrimino
+from mino import *
+from random import *
 from pygame.locals import *
+
+# Define
+block_size = 17 # Height, width of single block
+width = 10 # Board width
+height = 20 # Board height
+framerate = 30
 
 pygame.init()
 
@@ -19,30 +25,25 @@ class ui_variables:
     h5 = pygame.font.Font(font_path, 13)
     h6 = pygame.font.Font(font_path, 10)
 
-    #Colors
+    #Background colors
     black = (10, 10, 10) #rgb(10, 10, 10)
     white = (255, 255, 255) #rgb(255, 255, 255)
     grey_1 = (26, 26, 26) #rgb(26, 26, 26)
     grey_2 = (35, 35, 35) #rgb(35, 35, 35)
-    navy_1 = (32, 46, 55) #rgb(32, 46, 55)
-    skyblue = (131, 189, 221) #rgb(131, 189, 221)
 
-    cyan = (69, 206, 204) #rgb(69, 206, 204)
-    yellow = (246, 227, 90) #rgb(246, 227, 90)
-    pink = (242, 64, 235) #rgb(242, 64, 235)
-    blue = (64, 111, 249) #rgb(64, 111, 249)
-    green = (98, 190, 68) #rgb(98, 190, 68)
-    red = (225, 13, 27) #rgb(225, 13, 27)
-    orange = (253, 189, 53) #rgb(253, 189, 53)
+    # Tetrimino colors
+    cyan = (69, 206, 204) #rgb(69, 206, 204) # I
+    blue = (64, 111, 249) #rgb(64, 111, 249) # J
+    orange = (253, 189, 53) #rgb(253, 189, 53) # L
+    yellow = (246, 227, 90) #rgb(246, 227, 90) # O
+    green = (98, 190, 68) #rgb(98, 190, 68) # S
+    pink = (242, 64, 235) #rgb(242, 64, 235) # T
+    red = (225, 13, 27) #rgb(225, 13, 27) # Z
 
-# Initial values
-start = False
-done = False
-blink = True
-width, height = 10, 20 # Board width, height
-block_size = 17 # height / width of single block
-matrix = [[0 for x in range(height)] for y in range(width)]
+    t_color = [grey_2, cyan, blue, orange, yellow, green, pink, red]
+    t_list = ['wall', 'I', 'J', 'L', 'O', 'S', 'T', 'Z']
 
+# Draw single block
 def draw_block(x, y, color):
     pygame.draw.rect(
         screen,
@@ -56,12 +57,28 @@ def draw_block(x, y, color):
         1
     )
 
-def draw_board():
+# Draw game screen
+def draw_board(mino):
+    screen.fill(ui_variables.grey_1)
+
     pygame.draw.rect(
         screen,
         ui_variables.white,
         Rect(204, 0, 96, 374)
     )
+
+    grid = tetrimino.mino_map[mino - 1][0]
+
+    for i in range(4):
+        for j in range(4):
+            dx = 220 + block_size * j
+            dy = 150 + block_size * i
+            if grid[i][j] != 0:
+                pygame.draw.rect(
+                    screen,
+                    ui_variables.t_color[grid[i][j]],
+                    Rect(dx, dy, block_size, block_size)
+                )
 
     text_hold = ui_variables.h5.render("HOLD", 1, ui_variables.black)
     text_next = ui_variables.h5.render("NEXT", 1, ui_variables.black)
@@ -75,53 +92,96 @@ def draw_board():
         for y in range(height):
             dx = 17 + block_size * x
             dy = 17 + block_size * y
-            draw_block(dx, dy, ui_variables.grey_2)
+            draw_block(dx, dy, ui_variables.t_color[matrix[x][y]])
 
 def draw_mino(x, y, mino, r):
-    if mino == 'I':
-        color = ui_variables.cyan
-        grid = tetrimino.I[r]
-    elif mino == 'J':
-        color = ui_variables.blue
-        grid = tetrimino.J[r]
-    elif mino == 'L':
-        color = ui_variables.orange
-        grid = tetrimino.L[r]
-    elif mino == 'O':
-        color = ui_variables.yellow
-        grid = tetrimino.O[r]
-    elif mino == 'S':
-        color = ui_variables.green
-        grid = tetrimino.S[r]
-    elif mino == 'T':
-        color = ui_variables.pink
-        grid = tetrimino.T[r]
-    elif mino == 'Z':
-        color = ui_variables.red
-        grid = tetrimino.Z[r]
+    grid = tetrimino.mino_map[mino - 1][r]
 
     for i in range(4):
         for j in range(4):
             dx = 17 + block_size * (x + j)
             dy = 17 + block_size * (y + i)
-            if grid[i][j] == 1:
-                draw_block(dx, dy, color)
-                matrix[x + j][y + i] = 1
+            if grid[i][j] != 0:
+                matrix[x + j][y + i] = grid[i][j]
 
-# Set background color
-screen.fill(ui_variables.white)
-pygame.display.update()
+def erase_mino(x, y, mino, r):
+    grid = tetrimino.mino_map[mino - 1][r]
+
+    for i in range(4):
+        for j in range(4):
+            dx = 17 + block_size * (x + j)
+            dy = 17 + block_size * (y + i)
+            if grid[i][j] != 0:
+                matrix[x + j][y + i] = 0
+
+def is_bottom(x, y, mino, r):
+    grid = tetrimino.mino_map[mino - 1][r]
+
+    for i in range(4):
+        for j in range(4):
+            dx = 17 + block_size * (x + j)
+            dy = 17 + block_size * (y + i)
+            if grid[i][j] != 0:
+                if (y + i + 1) > 19:
+                    return True
+                elif matrix[x + j][y + i + 1] != 0:
+                    return True
+
+    return False
+
+# Initial values
+blink = True
+start = False
+done = False
+dx, dy = 3, 0
+rotation = 0
+
+mino = randint(1, 7)
+next_mino = randint(1, 7)
+
+matrix = [[0 for y in range(height)] for x in range(width)]
+
+###########################################################
+# Loop Start
+###########################################################
 
 while not done:
+    # Game screen
     if start:
-        screen.fill(ui_variables.grey_1)
-        draw_board()
-        draw_mino(3, 0, 'L', 0)
-        pygame.display.update()
-
         for event in pygame.event.get():
             if event.type == QUIT:
                 done = True
+            """
+            elif event.type == KEYDOWN:
+                if event.key == K_SPACE:
+                elif event.key == K_LSHIFT:
+                elif event.key == K_UP:
+                elif event.key == K_DOWN:
+                elif event.key == K_LEFT:
+                elif event.key == K_RIGHT:
+            """
+
+        # Draw a mino
+        draw_mino(dx, dy, mino, rotation)
+        draw_board(next_mino)
+        erase_mino(dx, dy, mino, rotation)
+
+        # Move mino down
+        if not is_bottom(dx, dy, mino, rotation):
+            dy += 1
+        # Create new mino
+        else:
+            draw_mino(dx, dy, mino, rotation)
+            draw_board(next_mino)
+            mino = next_mino
+            next_mino = randint(1, 7)
+            dx, dy = 3, 0
+            rotation = 0
+
+        pygame.display.update()
+        clock.tick(framerate / 10)
+
+    # Start screen
     else:
         for event in pygame.event.get():
             if event.type == QUIT:
