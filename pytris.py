@@ -136,8 +136,6 @@ def erase_mino(x, y, mino, r):
 
     for i in range(4):
         for j in range(4):
-            dx = 17 + block_size * (x + j)
-            dy = 17 + block_size * (y + i)
             if grid[i][j] != 0:
                 matrix[x + j][y + i] = 0
 
