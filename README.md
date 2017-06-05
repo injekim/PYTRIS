@@ -12,8 +12,9 @@ tetris made with pygame
 - Preventing invalid moves
 - Remove maxed out rows
 
-## Things to fix
-- Slow input register speed
+## Things to do
+- Add game over function
+- Fix slow input register speed
 
 ## Screenshots
 <img src="assets/images/1.png" width="35%">
