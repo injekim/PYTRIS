@@ -16,7 +16,7 @@ pygame.display.set_caption('CMSC 150 is cool')
 clock = pygame.time.Clock()
 
 # Before the loop, load the sounds:
-#click_sound = pygame.mixer.Sound("laser5.ogg")
+click_sound = pygame.mixer.Sound("front-desk-bells-daniel_simon.wav")
 
 # Set positions of graphics
 background_position = [0, 0]
@@ -32,8 +32,8 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
-#        elif event.type == pygame.MOUSEBUTTONDOWN:
-#            click_sound.play()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            click_sound.play()
 
     # Copy image to screen:
     screen.blit(background_image, background_position)

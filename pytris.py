@@ -27,6 +27,13 @@ class ui_variables:
     h5 = pygame.font.Font(font_path, 13)
     h6 = pygame.font.Font(font_path, 10)
 
+    # Sounds
+    drop_sound = pygame.mixer.Sound("assets/sounds/SFX_PieceHardDrop.wav")
+    single_sound = pygame.mixer.Sound("assets/sounds/SFX_SpecialLineClearSingle.wav")
+    double_sound = pygame.mixer.Sound("assets/sounds/SFX_SpecialLineClearDouble.wav")
+    triple_sound = pygame.mixer.Sound("assets/sounds/SFX_SpecialLineClearTriple.wav")
+    tetris_sound = pygame.mixer.Sound("assets/sounds/SFX_SpecialTetris.wav")
+
     #Background colors
     black = (10, 10, 10) #rgb(10, 10, 10)
     white = (255, 255, 255) #rgb(255, 255, 255)
@@ -267,17 +274,22 @@ while not done:
                                 matrix[i][k] = matrix[i][k - 1]
                             k -= 1
                 if erase_count == 1:
+                    ui_variables.single_sound.play()
                     score += 50
                 elif erase_count == 2:
+                    ui_variables.double_sound.play()
                     score += 150
                 elif erase_count == 3:
+                    ui_variables.triple_sound.play()
                     score += 350
                 elif erase_count == 4:
+                    ui_variables.tetris_sound.play()
                     score += 1000
 
             elif event.type == KEYDOWN:
                 erase_mino(dx, dy, mino, rotation)
                 if event.key == K_SPACE:
+                    ui_variables.drop_sound.play()
                     while not is_bottom(dx, dy, mino, rotation):
                         dy += 1
                 elif event.key == K_LSHIFT:
