@@ -129,6 +129,36 @@ def is_bottom(x, y, mino, r):
 
     return False
 
+def is_leftedge(x, y, mino, r):
+    grid = tetrimino.mino_map[mino - 1][r]
+
+    for i in range(4):
+        for j in range(4):
+            dx = 17 + block_size * (x + j)
+            dy = 17 + block_size * (y + i)
+            if grid[i][j] != 0:
+                if (x + j - 1) < 0:
+                    return True
+                elif matrix[x + j - 1][y + i] != 0:
+                    return True
+
+    return False
+
+def is_rightedge(x, y, mino, r):
+    grid = tetrimino.mino_map[mino - 1][r]
+
+    for i in range(4):
+        for j in range(4):
+            dx = 17 + block_size * (x + j)
+            dy = 17 + block_size * (y + i)
+            if grid[i][j] != 0:
+                if (x + j + 1) > 9:
+                    return True
+                elif matrix[x + j + 1][y + i] != 0:
+                    return True
+
+    return False
+
 # Initial values
 blink = True
 start = False
@@ -151,15 +181,29 @@ while not done:
         for event in pygame.event.get():
             if event.type == QUIT:
                 done = True
-            """
             elif event.type == KEYDOWN:
+                erase_mino(dx, dy, mino, rotation)
                 if event.key == K_SPACE:
+                    while not is_bottom(dx, dy, mino, rotation):
+                        dy += 1
+                        """
                 elif event.key == K_LSHIFT:
+                """
                 elif event.key == K_UP:
+                    rotation += 1
+                    if rotation == 4:
+                        rotation = 0
                 elif event.key == K_DOWN:
+                    if not is_bottom(dx, dy, mino, rotation):
+                        dy += 1
                 elif event.key == K_LEFT:
+                    if not is_leftedge(dx, dy, mino, rotation):
+                        dx -= 1
                 elif event.key == K_RIGHT:
-            """
+                    if not is_rightedge(dx, dy, mino, rotation):
+                        dx += 1
+                draw_mino(dx, dy, mino, rotation)
+                draw_board(next_mino)
 
         # Draw a mino
         draw_mino(dx, dy, mino, rotation)
