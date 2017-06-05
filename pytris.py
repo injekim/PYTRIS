@@ -247,6 +247,7 @@ while not done:
 
                 # Create new mino
                 else:
+                    score += 10
                     draw_mino(dx, dy, mino, rotation)
                     draw_board(next_mino, hold_mino, score)
                     if is_stackable(next_mino):
