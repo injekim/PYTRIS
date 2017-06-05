@@ -317,17 +317,18 @@ while not done:
         over_text = ui_variables.h2.render("GAME OVER", 1, ui_variables.white)
         over_start = ui_variables.h5.render("Press space to start", 1, ui_variables.white)
 
-        draw_board(next_mino, hold_mino, score)
-        screen.blit(over_text, (20, 100))
+        if game_over == True:
+            draw_board(next_mino, hold_mino, score)
+            screen.blit(over_text, (20, 100))
 
-        if blink:
-            screen.blit(over_start, (46, 160))
-            blink = False
-        else:
-            blink = True
+            if blink:
+                screen.blit(over_start, (46, 160))
+                blink = False
+            else:
+                blink = True
 
-        pygame.display.update()
-        clock.tick(framerate / 10)
+            pygame.display.update()
+            clock.tick(framerate / 10)
 
     # Start screen
     else:
@@ -359,7 +360,6 @@ while not done:
 
         if not start:
             pygame.display.update()
-
-        clock.tick(framerate / 10)
+            clock.tick(framerate / 10)
 
 pygame.quit()
