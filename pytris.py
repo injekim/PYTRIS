@@ -15,7 +15,7 @@ pygame.init()
 
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((300, 374))
-pygame.time.set_timer ( pygame.USEREVENT , framerate * 10)
+pygame.time.set_timer (pygame.USEREVENT , framerate * 10)
 pygame.display.set_caption("PYTRIS™")
 
 class ui_variables:
@@ -204,6 +204,7 @@ start = False
 done = False
 game_over = False
 key_press = False
+erase_count = 0
 hold = False
 dx, dy = 3, 0
 rotation = 0
@@ -236,6 +237,7 @@ while not done:
                 # Move mino down
                 if not is_bottom(dx, dy, mino, rotation):
                     dy += 1
+
                 # Create new mino
                 else:
                     draw_mino(dx, dy, mino, rotation)
@@ -251,18 +253,28 @@ while not done:
                         game_over = True
 
                 # Erase line
+                erase_count = 0
                 for j in range(20):
                     is_full = True
                     for i in range(10):
                         if matrix[i][j] == 0:
                             is_full = False
                     if is_full:
-                        score += 100
+                        erase_count += 1
                         k = j
                         while k > 0:
                             for i in range(10):
                                 matrix[i][k] = matrix[i][k - 1]
                             k -= 1
+                if erase_count == 1:
+                    score += 50
+                elif erase_count == 2:
+                    score += 150
+                elif erase_count == 3:
+                    score += 350
+                elif erase_count == 4:
+                    score += 1000
+
             elif event.type == KEYDOWN:
                 erase_mino(dx, dy, mino, rotation)
                 if event.key == K_SPACE:
