@@ -58,7 +58,7 @@ def draw_block(x, y, color):
     )
 
 # Draw game screen
-def draw_board(mino):
+def draw_board(next, hold, score):
     screen.fill(ui_variables.grey_1)
 
     pygame.draw.rect(
@@ -67,26 +67,44 @@ def draw_board(mino):
         Rect(204, 0, 96, 374)
     )
 
-    grid = tetrimino.mino_map[mino - 1][0]
+    # Draw next mino
+    grid_n = tetrimino.mino_map[next - 1][0]
 
     for i in range(4):
         for j in range(4):
             dx = 220 + block_size * j
             dy = 150 + block_size * i
-            if grid[i][j] != 0:
+            if grid_n[i][j] != 0:
                 pygame.draw.rect(
                     screen,
-                    ui_variables.t_color[grid[i][j]],
+                    ui_variables.t_color[grid_n[i][j]],
                     Rect(dx, dy, block_size, block_size)
                 )
+
+    # Draw hold mino
+    grid_h = tetrimino.mino_map[hold - 1][0]
+
+    if hold_mino != -1:
+        for i in range(4):
+            for j in range(4):
+                dx = 220 + block_size * j
+                dy = 50 + block_size * i
+                if grid_h[i][j] != 0:
+                    pygame.draw.rect(
+                        screen,
+                        ui_variables.t_color[grid_h[i][j]],
+                        Rect(dx, dy, block_size, block_size)
+                    )
 
     text_hold = ui_variables.h5.render("HOLD", 1, ui_variables.black)
     text_next = ui_variables.h5.render("NEXT", 1, ui_variables.black)
     text_score = ui_variables.h5.render("SCORE", 1, ui_variables.black)
+    score_value = ui_variables.h4.render(str(score), 1, ui_variables.black)
 
     screen.blit(text_hold, (215, 14))
     screen.blit(text_next, (215, 114))
     screen.blit(text_score, (215, 214))
+    screen.blit(score_value, (220, 230))
 
     for x in range(width):
         for y in range(height):
@@ -159,15 +177,36 @@ def is_rightedge(x, y, mino, r):
 
     return False
 
+def is_turnable(x, y, mino, r):
+    if r != 3:
+        grid = tetrimino.mino_map[mino - 1][r + 1]
+    else:
+        grid = tetrimino.mino_map[mino - 1][0]
+
+    for i in range(4):
+        for j in range(4):
+            dx = 17 + block_size * (x + j)
+            dy = 17 + block_size * (y + i)
+            if grid[i][j] != 0:
+                if (x + j) < 0 or (x + j) > 9 or (y + i) < 0 or (y + i) > 19:
+                    return False
+                elif matrix[x + j][y + i] != 0:
+                    return False
+
+    return True
+
 # Initial values
 blink = True
 start = False
 done = False
+hold = False
 dx, dy = 3, 0
 rotation = 0
 
 mino = randint(1, 7)
 next_mino = randint(1, 7)
+hold_mino = -1
+score = 0
 
 matrix = [[0 for y in range(height)] for x in range(width)]
 
@@ -186,11 +225,20 @@ while not done:
                 if event.key == K_SPACE:
                     while not is_bottom(dx, dy, mino, rotation):
                         dy += 1
-                        """
                 elif event.key == K_LSHIFT:
-                """
+                    if hold == False:
+                        if hold_mino == -1:
+                            hold_mino = mino
+                            mino = next_mino
+                            next_mino = randint(1, 7)
+                        else:
+                            hold_mino, mino = mino, hold_mino
+                            dx, dy = 3, 0
+                            rotation = 0
+                        hold = True
                 elif event.key == K_UP:
-                    rotation += 1
+                    if is_turnable(dx, dy, mino, rotation):
+                        rotation += 1
                     if rotation == 4:
                         rotation = 0
                 elif event.key == K_DOWN:
@@ -203,11 +251,13 @@ while not done:
                     if not is_rightedge(dx, dy, mino, rotation):
                         dx += 1
                 draw_mino(dx, dy, mino, rotation)
-                draw_board(next_mino)
+                draw_board(next_mino, hold_mino, score)
 
         # Draw a mino
         draw_mino(dx, dy, mino, rotation)
-        draw_board(next_mino)
+        draw_board(next_mino, hold_mino, score)
+
+        # Erase a mino
         erase_mino(dx, dy, mino, rotation)
 
         # Move mino down
@@ -216,11 +266,26 @@ while not done:
         # Create new mino
         else:
             draw_mino(dx, dy, mino, rotation)
-            draw_board(next_mino)
+            draw_board(next_mino, hold_mino, score)
             mino = next_mino
             next_mino = randint(1, 7)
             dx, dy = 3, 0
             rotation = 0
+            hold = False
+
+        # Erase line
+        for j in range(20):
+            is_full = True
+            for i in range(10):
+                if matrix[i][j] == 0:
+                    is_full = False
+            if is_full:
+                score += 100
+                k = j
+                while k > 0:
+                    for i in range(10):
+                        matrix[i][k] = matrix[i][k - 1]
+                    k -= 1
 
         pygame.display.update()
         clock.tick(framerate / 10)
@@ -254,7 +319,7 @@ while not done:
         screen.blit(title_info, (40, 335))
 
         if not start:
-            clock.tick(3)
             pygame.display.update()
 
+    clock.tick(framerate / 10)
 pygame.quit()
