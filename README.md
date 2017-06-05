@@ -3,7 +3,7 @@ tetris made with pygame
 
 <img src="assets/images/play.gif" width="30%">
 
-## Working Functions
+## Things that work
 - Start screen with blinking text
 - Randomly generated tetrimino blocks
 - Next block indicator
@@ -15,7 +15,7 @@ tetris made with pygame
 - Sound effect for Single, Double, Triple and TETRIS
 - Game over when screen is full
 
-## Things to add
+## Things that don't work
 - T-spin support
 - Level system
 
