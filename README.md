@@ -4,20 +4,20 @@ tetris made with pygame
 <img src="assets/images/play.gif" width="30%">
 
 ## Things that work
-- Start screen with blinking text
-- Randomly generated tetrimino blocks
-- Next block indicator
-- Hold block Function
-- Score display
-- Preventing invalid moves
-- Remove maxed out rows
-- Sound effect for button clicks
-- Sound effect for Single, Double, Triple and TETRIS
-- Game over when screen is full
+- [Start screen with blinking text](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#start-screen-with-blinking-text)
+- [Randomly generated tetrimino blocks](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#randomly-generated-tetrimino-blocks)
+- [Displays](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#displays)
+- [Preventing invalid moves](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#preventing-invalid-moves)
+- [Remove maxed out rows](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#remove-maxed-out-rows)
+- [Sound effects](https://github.com/k0626089/PYTRIS/wiki/Resources#sound-source)
+- [Game over when screen is full](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#game-over-when-the-board-is-full)
 
 ## Things that don't work
-- T-spin support
-- Level system
+Everything seem to work for now
+
+## Future plans
+- [T-spin support](https://github.com/k0626089/PYTRIS/wiki/Future-plans#t-spin-support)
+- [Level system](https://github.com/k0626089/PYTRIS/wiki/Future-plans#level-system)
 
 ## Screenshots
 <img src="assets/images/title.png" width="35%">
