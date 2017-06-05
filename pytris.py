@@ -317,20 +317,20 @@ while not done:
                     matrix = [[0 for y in range(height)] for x in range(width)]
 
         over_text = ui_variables.h2.render("GAME OVER", 1, ui_variables.white)
-        over_start = ui_variables.h5.render("Press space to start", 1, ui_variables.white)
+        over_start = ui_variables.h5.render("Press space to continue", 1, ui_variables.white)
 
         if game_over == True:
             draw_board(next_mino, hold_mino, score)
             screen.blit(over_text, (20, 100))
 
             if blink:
-                screen.blit(over_start, (46, 160))
+                screen.blit(over_start, (32, 160))
                 blink = False
             else:
                 blink = True
 
             pygame.display.update()
-            clock.tick(5)
+            clock.tick(3)
 
     # Start screen
     else:
@@ -362,6 +362,6 @@ while not done:
 
         if not start:
             pygame.display.update()
-            clock.tick(5)
+            clock.tick(3)
 
 pygame.quit()

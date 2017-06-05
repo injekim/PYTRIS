@@ -13,7 +13,7 @@ tetris made with pygame
 - Remove maxed out rows
 - Game over when screen is full
 
-## Things to do
+## Things to add
 - Effects for Single, Double, Triple and TETRIS
 - T-spin support
 
