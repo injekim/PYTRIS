@@ -10,7 +10,7 @@ tetris made with pygame
 - [Preventing invalid moves](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#preventing-invalid-moves)
 - [Remove maxed out rows](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#remove-maxed-out-rows)
 - [Sound effects](https://github.com/k0626089/PYTRIS/wiki/Resources#sound-source)
-- [Game over when screen is full](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#game-over-when-the-board-is-full)
+- [Game over when the board is full](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#game-over-when-the-board-is-full)
 
 ## Things that don't work
 Everything seem to work for now
