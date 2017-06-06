@@ -4,12 +4,14 @@ tetris made with pygame
 <img src="assets/images/play.gif" width="30%">
 
 ## How to play
-- Move left | Left arrow
-- Move right | Right arrow
-- Rotate right | Up arrow
-- Soft drop | Down arrow
-- Hard drop | Space
-- Hold block | Left shift
+| Command      | Key         |
+|--------------|-------------|
+| Move left    | Left arrow  |
+| Move right   | Right arrow |
+| Rotate right | Up arrow    |
+| Soft drop    | Down arrow  |
+| Hard drop    | Space       |
+| Hold block   | Left shift  |
 
 ## Things that work
 - [Start screen with blinking text](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#start-screen-with-blinking-text)
