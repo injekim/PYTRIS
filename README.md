@@ -12,6 +12,7 @@ tetris made with pygame
 | Soft drop    | Down arrow  |
 | Hard drop    | Space       |
 | Hold block   | Left shift  |
+More on [How to play](https://github.com/k0626089/PYTRIS/wiki/How-to-play)
 
 ## Things that work
 - [Start screen with blinking text](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#start-screen-with-blinking-text)
