@@ -13,6 +13,8 @@ tetris made with pygame
 | Hard drop    | Space       |
 | Hold block   | Left shift  |
 
+More on [How to play](https://github.com/k0626089/PYTRIS/wiki/How-to-play)
+
 ## Score board
 | Action       | Score       |
 |--------------|-------------|
@@ -21,8 +23,6 @@ tetris made with pygame
 | Double       | 150 * level |
 | Triple       | 350 * level |
 | Tetris       | 1000 * level|
-
-More on [How to play](https://github.com/k0626089/PYTRIS/wiki/How-to-play)
 
 ## Things that work
 - [Start screen with blinking text](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#start-screen-with-blinking-text)
