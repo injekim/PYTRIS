@@ -15,7 +15,7 @@ pygame.init()
 
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((300, 374))
-pygame.time.set_timer (pygame.USEREVENT , framerate * 10)
+pygame.time.set_timer(pygame.USEREVENT , framerate * 10)
 pygame.display.set_caption("PYTRIS™")
 
 class ui_variables:
@@ -303,13 +303,11 @@ while not done:
 
                 # Increase level
                 goal -= erase_count
-                if goal < 1:
+                if goal < 1 and level < 15:
                     level += 1
                     goal += level * 5
-                    if framerate > 7 and level < 15:
-                        framerate -= 7
-                        pygame.time.set_timer (pygame.USEREVENT , framerate * 10)
-
+                    framerate = int(framerate * 0.8)
+                    pygame.time.set_timer(pygame.USEREVENT , framerate * 10)
 
             elif event.type == KEYDOWN:
                 erase_mino(dx, dy, mino, rotation)
