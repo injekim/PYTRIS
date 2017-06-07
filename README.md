@@ -1,7 +1,7 @@
 # PYTRIS™
 tetris made with pygame
 
-<img src="assets/images/gameplay_1.gif" width="30%">
+<img src="assets/images/gameplay_1.gif" width="250">
 
 ## How to play
 | Command      | Key         |
@@ -34,8 +34,8 @@ Everything seem to work for now
 - [Ghost](https://github.com/k0626089/PYTRIS/wiki/Future-plans#ghost)
 
 ## Screenshots
-<img src="assets/images/title.png" width="35%">
-<img src="assets/images/gameplay.png" width="35%">
-<img src="assets/images/gameover.png" width="35%">
+<img src="assets/images/title.png" width="300">
+<img src="assets/images/gameplay.png" width="300">
+<img src="assets/images/gameover.png" width="300">
 
 More informations on [PYTRIS™ Wiki](https://github.com/k0626089/PYTRIS/wiki)
