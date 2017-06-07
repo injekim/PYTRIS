@@ -36,7 +36,7 @@ class ui_variables:
     triple_sound = pygame.mixer.Sound("assets/sounds/SFX_SpecialLineClearTriple.wav")
     tetris_sound = pygame.mixer.Sound("assets/sounds/SFX_SpecialTetris.wav")
 
-    #Background colors
+    # Background colors
     black = (10, 10, 10) #rgb(10, 10, 10)
     white = (255, 255, 255) #rgb(255, 255, 255)
     grey_1 = (26, 26, 26) #rgb(26, 26, 26)
@@ -70,10 +70,6 @@ def draw_block(x, y, color):
 
 # Draw game screen
 def draw_board(next, hold, score, level, goal):
-    # Max score
-    if score > 999999:
-        score = 999999
-
     screen.fill(ui_variables.grey_1)
 
     pygame.draw.rect(
@@ -111,6 +107,11 @@ def draw_board(next, hold, score, level, goal):
                         Rect(dx, dy, block_size, block_size)
                     )
 
+    # Set max score
+    if score > 999999:
+        score = 999999
+
+    # Draw texts
     text_hold = ui_variables.h5.render("HOLD", 1, ui_variables.black)
     text_next = ui_variables.h5.render("NEXT", 1, ui_variables.black)
     text_score = ui_variables.h5.render("SCORE", 1, ui_variables.black)
@@ -120,6 +121,7 @@ def draw_board(next, hold, score, level, goal):
     text_goal = ui_variables.h5.render("GOAL", 1, ui_variables.black)
     goal_value = ui_variables.h4.render(str(goal), 1, ui_variables.black)
 
+    # Place texts
     screen.blit(text_hold, (215, 14))
     screen.blit(text_next, (215, 114))
     screen.blit(text_score, (215, 214))
