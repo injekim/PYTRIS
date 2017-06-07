@@ -52,7 +52,6 @@ class ui_variables:
     red = (225, 13, 27) #rgb(225, 13, 27) # Z
 
     t_color = [grey_2, cyan, blue, orange, yellow, green, pink, red]
-    t_list = ['wall', 'I', 'J', 'L', 'O', 'S', 'T', 'Z']
 
 # Draw single block
 def draw_block(x, y, color):
