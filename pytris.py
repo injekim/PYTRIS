@@ -223,19 +223,20 @@ def is_stackable(mino):
 blink = True
 start = False
 done = False
-level = 1
-goal = 5
 game_over = False
-key_press = False
-erase_count = 0
-hold = False
+
+score = 0
+level = 1
+goal = level * 5
+
 dx, dy = 3, 0
 rotation = 0
 
 mino = randint(1, 7)
 next_mino = randint(1, 7)
+
+hold = False
 hold_mino = -1
-score = 0
 
 matrix = [[0 for y in range(height)] for x in range(width)]
 
@@ -347,7 +348,6 @@ while not done:
                     if not is_rightedge(dx, dy, mino, rotation):
                         ui_variables.move_sound.play()
                         dx += 1
-                key_press = True
                 draw_mino(dx, dy, mino, rotation)
                 draw_board(next_mino, hold_mino, score, level, goal)
 
