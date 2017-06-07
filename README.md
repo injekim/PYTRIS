@@ -13,6 +13,15 @@ tetris made with pygame
 | Hard drop    | Space       |
 | Hold block   | Left shift  |
 
+## Score board
+| Action       | Score       |
+|--------------|-------------|
+| Block drop   | 10 * level  |
+| Single       | 50 * level  |
+| Double       | 150 * level |
+| Triple       | 350 * level |
+| Tetris       | 1000 * level|
+
 More on [How to play](https://github.com/k0626089/PYTRIS/wiki/How-to-play)
 
 ## Things that work
