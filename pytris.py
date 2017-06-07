@@ -9,7 +9,7 @@ from pygame.locals import *
 block_size = 17 # Height, width of single block
 width = 10 # Board width
 height = 20 # Board height
-framerate = 30
+framerate = 30 # Bigger -> Slower
 
 pygame.init()
 
@@ -135,6 +135,7 @@ def draw_board(next, hold, score, level, goal):
             dy = 17 + block_size * y
             draw_block(dx, dy, ui_variables.t_color[matrix[x][y]])
 
+# Draw a tetrimino
 def draw_mino(x, y, mino, r):
     grid = tetrimino.mino_map[mino - 1][r]
 
@@ -143,6 +144,7 @@ def draw_mino(x, y, mino, r):
             if grid[i][j] != 0:
                 matrix[x + j][y + i] = grid[i][j]
 
+# Erase a tetrimino
 def erase_mino(x, y, mino, r):
     grid = tetrimino.mino_map[mino - 1][r]
 
