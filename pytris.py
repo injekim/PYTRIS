@@ -69,7 +69,7 @@ def draw_block(x, y, color):
     )
 
 # Draw game screen
-def draw_board(next, hold, score):
+def draw_board(next, hold, score, level, goal):
     screen.fill(ui_variables.grey_1)
 
     pygame.draw.rect(
@@ -111,11 +111,19 @@ def draw_board(next, hold, score):
     text_next = ui_variables.h5.render("NEXT", 1, ui_variables.black)
     text_score = ui_variables.h5.render("SCORE", 1, ui_variables.black)
     score_value = ui_variables.h4.render(str(score), 1, ui_variables.black)
+    text_level = ui_variables.h5.render("LEVEL", 1, ui_variables.black)
+    level_value = ui_variables.h4.render(str(level), 1, ui_variables.black)
+    text_goal = ui_variables.h5.render("GOAL", 1, ui_variables.black)
+    goal_value = ui_variables.h4.render(str(goal), 1, ui_variables.black)
 
     screen.blit(text_hold, (215, 14))
     screen.blit(text_next, (215, 114))
     screen.blit(text_score, (215, 214))
     screen.blit(score_value, (220, 230))
+    screen.blit(text_level, (215, 264))
+    screen.blit(level_value, (220, 280))
+    screen.blit(text_goal, (215, 314))
+    screen.blit(goal_value, (220, 330))
 
     for x in range(width):
         for y in range(height):
@@ -209,6 +217,8 @@ def is_stackable(mino):
 blink = True
 start = False
 done = False
+level = 1
+goal = 5
 game_over = False
 key_press = False
 erase_count = 0
@@ -236,7 +246,7 @@ while not done:
             elif event.type == USEREVENT:
                 # Draw a mino
                 draw_mino(dx, dy, mino, rotation)
-                draw_board(next_mino, hold_mino, score)
+                draw_board(next_mino, hold_mino, score, level, goal)
 
                 # Erase a mino
                 erase_mino(dx, dy, mino, rotation)
@@ -249,7 +259,7 @@ while not done:
                 else:
                     score += 10
                     draw_mino(dx, dy, mino, rotation)
-                    draw_board(next_mino, hold_mino, score)
+                    draw_board(next_mino, hold_mino, score, level, goal)
                     if is_stackable(next_mino):
                         mino = next_mino
                         next_mino = randint(1, 7)
@@ -286,6 +296,12 @@ while not done:
                 elif erase_count == 4:
                     ui_variables.tetris_sound.play()
                     score += 1000
+
+                # Increase level
+                goal -= erase_count
+                if goal < 1:
+                    level += 1
+                    goal = level * 5
 
             elif event.type == KEYDOWN:
                 erase_mino(dx, dy, mino, rotation)
@@ -325,7 +341,7 @@ while not done:
                         dx += 1
                 key_press = True
                 draw_mino(dx, dy, mino, rotation)
-                draw_board(next_mino, hold_mino, score)
+                draw_board(next_mino, hold_mino, score, level, goal)
 
         pygame.display.update()
 
@@ -351,7 +367,7 @@ while not done:
         over_start = ui_variables.h5.render("Press space to continue", 1, ui_variables.white)
 
         if game_over == True:
-            draw_board(next_mino, hold_mino, score)
+            draw_board(next_mino, hold_mino, score, level, goal)
             screen.blit(over_text, (20, 100))
 
             if blink:
