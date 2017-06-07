@@ -70,6 +70,10 @@ def draw_block(x, y, color):
 
 # Draw game screen
 def draw_board(next, hold, score, level, goal):
+    # Max score
+    if score > 999999:
+        score = 999999
+
     screen.fill(ui_variables.grey_1)
 
     pygame.draw.rect(
