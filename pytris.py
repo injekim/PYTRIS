@@ -302,6 +302,10 @@ while not done:
                 if goal < 1:
                     level += 1
                     goal = level * 5
+                    if framerate > 7:
+                        framerate -= 7
+                        pygame.time.set_timer (pygame.USEREVENT , framerate * 10)
+
 
             elif event.type == KEYDOWN:
                 erase_mino(dx, dy, mino, rotation)
