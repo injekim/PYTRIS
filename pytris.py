@@ -301,7 +301,7 @@ while not done:
                 goal -= erase_count
                 if goal < 1:
                     level += 1
-                    goal = level * 5
+                    goal += level * 5
                     if framerate > 7:
                         framerate -= 7
                         pygame.time.set_timer (pygame.USEREVENT , framerate * 10)
