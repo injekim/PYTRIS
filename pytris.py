@@ -15,7 +15,7 @@ pygame.init()
 
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((300, 374))
-pygame.time.set_timer(pygame.USEREVENT , framerate * 10)
+pygame.time.set_timer(pygame.USEREVENT, framerate * 10)
 pygame.display.set_caption("PYTRIS™")
 
 class ui_variables:
@@ -131,6 +131,7 @@ def draw_board(next, hold, score, level, goal):
     screen.blit(text_goal, (215, 314))
     screen.blit(goal_value, (220, 330))
 
+    # Draw board
     for x in range(width):
         for y in range(height):
             dx = 17 + block_size * x
@@ -267,6 +268,9 @@ while not done:
             if event.type == QUIT:
                 done = True
             elif event.type == USEREVENT:
+                # Set speed
+                pygame.time.set_timer(pygame.USEREVENT, framerate * 10)
+
                 # Draw a mino
                 draw_mino(dx, dy, mino, rotation)
                 draw_board(next_mino, hold_mino, score, level, goal)
@@ -326,7 +330,6 @@ while not done:
                     level += 1
                     goal += level * 5
                     framerate = int(framerate * 0.8)
-                    pygame.time.set_timer(pygame.USEREVENT , framerate * 10)
 
             elif event.type == KEYDOWN:
                 erase_mino(dx, dy, mino, rotation)
@@ -334,6 +337,7 @@ while not done:
                     ui_variables.drop_sound.play()
                     while not is_bottom(dx, dy, mino, rotation):
                         dy += 1
+                    pygame.time.set_timer(pygame.USEREVENT, 5)
                 elif event.key == K_LSHIFT:
                     if hold == False:
                         ui_variables.move_sound.play()
