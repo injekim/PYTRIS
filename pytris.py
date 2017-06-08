@@ -245,6 +245,8 @@ game_over = False
 score = 0
 level = 1
 goal = level * 5
+bottom_count = 0
+hard_drop = False
 
 dx, dy = 3, 0
 rotation = 0
@@ -284,18 +286,23 @@ while not done:
 
                 # Create new mino
                 else:
-                    score += 10 * level
-                    draw_mino(dx, dy, mino, rotation)
-                    draw_board(next_mino, hold_mino, score, level, goal)
-                    if is_stackable(next_mino):
-                        mino = next_mino
-                        next_mino = randint(1, 7)
-                        dx, dy = 3, 0
-                        rotation = 0
-                        hold = False
+                    if hard_drop or bottom_count == 3:
+                        hard_drop = False
+                        bottom_count = 0
+                        score += 10 * level
+                        draw_mino(dx, dy, mino, rotation)
+                        draw_board(next_mino, hold_mino, score, level, goal)
+                        if is_stackable(next_mino):
+                            mino = next_mino
+                            next_mino = randint(1, 7)
+                            dx, dy = 3, 0
+                            rotation = 0
+                            hold = False
+                        else:
+                            start = False
+                            game_over = True
                     else:
-                        start = False
-                        game_over = True
+                        bottom_count += 1
 
                 # Erase line
                 erase_count = 0
@@ -337,6 +344,7 @@ while not done:
                     ui_variables.drop_sound.play()
                     while not is_bottom(dx, dy, mino, rotation):
                         dy += 1
+                    hard_drop = True
                     pygame.time.set_timer(pygame.USEREVENT, 5)
                 elif event.key == K_LSHIFT:
                     if hold == False:
