@@ -1,7 +1,7 @@
 # PYTRIS™
 tetris made with pygame
 
-<img src="assets/images/gameplay.gif" width="250">
+<img src="assets/images/gameplay2.gif" width="250">
 
 ## How to play
 | Command      | Key         |
