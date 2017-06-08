@@ -397,6 +397,11 @@ while not done:
                     next_mino = randint(1, 7)
                     hold_mino = -1
                     score = 0
+                    score = 0
+                    level = 1
+                    goal = level * 5
+                    bottom_count = 0
+                    hard_drop = False
                     matrix = [[0 for y in range(height + 1)] for x in range(width)]
 
         over_text = ui_variables.h2.render("GAME OVER", 1, ui_variables.white)
