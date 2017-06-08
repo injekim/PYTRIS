@@ -41,6 +41,7 @@ class ui_variables:
     white = (255, 255, 255) #rgb(255, 255, 255)
     grey_1 = (26, 26, 26) #rgb(26, 26, 26)
     grey_2 = (35, 35, 35) #rgb(35, 35, 35)
+    grey_3 = (55, 55, 55) #rgb(55, 55, 55)
 
     # Tetrimino colors
     cyan = (69, 206, 204) #rgb(69, 206, 204) # I
@@ -51,7 +52,7 @@ class ui_variables:
     pink = (242, 64, 235) #rgb(242, 64, 235) # T
     red = (225, 13, 27) #rgb(225, 13, 27) # Z
 
-    t_color = [grey_2, cyan, blue, orange, yellow, green, pink, red]
+    t_color = [grey_2, cyan, blue, orange, yellow, green, pink, red, grey_3]
 
 # Draw single block
 def draw_block(x, y, color):
@@ -140,6 +141,15 @@ def draw_board(next, hold, score, level, goal):
 def draw_mino(x, y, mino, r):
     grid = tetrimino.mino_map[mino - 1][r]
 
+    tx, ty = x, y
+    while not is_bottom(tx, ty, mino, r):
+        ty += 1
+
+    for i in range(4):
+        for j in range(4):
+            if grid[i][j] != 0:
+                matrix[tx + j][ty + i] = 8
+
     for i in range(4):
         for j in range(4):
             if grid[i][j] != 0:
@@ -148,6 +158,11 @@ def draw_mino(x, y, mino, r):
 # Erase a tetrimino
 def erase_mino(x, y, mino, r):
     grid = tetrimino.mino_map[mino - 1][r]
+
+    for j in range(20):
+        for i in range(10):
+            if matrix[i][j] == 8:
+                matrix[i][j] = 0
 
     for i in range(4):
         for j in range(4):
