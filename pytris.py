@@ -177,7 +177,7 @@ def is_bottom(x, y, mino, r):
             if grid[i][j] != 0:
                 if (y + i + 1) > 19:
                     return True
-                elif matrix[x + j][y + i + 1] != 0:
+                elif matrix[x + j][y + i + 1] != 0 and matrix[x + j][y + i + 1] != 8:
                     return True
 
     return False
