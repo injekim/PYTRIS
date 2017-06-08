@@ -342,9 +342,6 @@ while not done:
                 erase_mino(dx, dy, mino, rotation)
                 if event.key == K_SPACE:
                     ui_variables.drop_sound.play()
-                    if  is_bottom(dx, dy, mino, rotation):
-                        start = False
-                        game_over = True
                     while not is_bottom(dx, dy, mino, rotation):
                         dy += 1
                     hard_drop = True
