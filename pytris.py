@@ -397,7 +397,7 @@ while not done:
                     next_mino = randint(1, 7)
                     hold_mino = -1
                     score = 0
-                    matrix = [[0 for y in range(height)] for x in range(width)]
+                    matrix = [[0 for y in range(height + 1)] for x in range(width)]
 
         over_text = ui_variables.h2.render("GAME OVER", 1, ui_variables.white)
         over_start = ui_variables.h5.render("Press space to continue", 1, ui_variables.white)
