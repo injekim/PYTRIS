@@ -136,7 +136,7 @@ def draw_board(next, hold, score, level, goal):
         for y in range(height):
             dx = 17 + block_size * x
             dy = 17 + block_size * y
-            draw_block(dx, dy, ui_variables.t_color[matrix[x][y]])
+            draw_block(dx, dy, ui_variables.t_color[matrix[x][y + 1]])
 
 # Draw a tetrimino
 def draw_mino(x, y, mino, r):
@@ -160,7 +160,7 @@ def draw_mino(x, y, mino, r):
 def erase_mino(x, y, mino, r):
     grid = tetrimino.mino_map[mino - 1][r]
 
-    for j in range(20):
+    for j in range(21):
         for i in range(10):
             if matrix[i][j] == 8:
                 matrix[i][j] = 0
@@ -176,7 +176,7 @@ def is_bottom(x, y, mino, r):
     for i in range(4):
         for j in range(4):
             if grid[i][j] != 0:
-                if (y + i + 1) > 19:
+                if (y + i + 1) > 20:
                     return True
                 elif matrix[x + j][y + i + 1] != 0 and matrix[x + j][y + i + 1] != 8:
                     return True
@@ -218,7 +218,7 @@ def is_turnable(x, y, mino, r):
     for i in range(4):
         for j in range(4):
             if grid[i][j] != 0:
-                if (x + j) < 0 or (x + j) > 9 or (y + i) < 0 or (y + i) > 19:
+                if (x + j) < 0 or (x + j) > 9 or (y + i) < 0 or (y + i) > 20:
                     return False
                 elif matrix[x + j][y + i] != 0:
                     return False
@@ -257,7 +257,7 @@ next_mino = randint(1, 7)
 hold = False
 hold_mino = -1
 
-matrix = [[0 for y in range(height)] for x in range(width)]
+matrix = [[0 for y in range(height + 1)] for x in range(width)]
 
 ###########################################################
 # Loop Start
@@ -306,7 +306,7 @@ while not done:
 
                 # Erase line
                 erase_count = 0
-                for j in range(20):
+                for j in range(21):
                     is_full = True
                     for i in range(10):
                         if matrix[i][j] == 0:
