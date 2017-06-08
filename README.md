@@ -33,6 +33,7 @@ More on [How to play](https://github.com/k0626089/PYTRIS/wiki/How-to-play)
 - [Remove maxed out rows](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#remove-maxed-out-rows)
 - [Sound effects](https://github.com/k0626089/PYTRIS/wiki/Resources#sound-source)
 - [Game over when the board is full](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#game-over-when-the-board-is-full)
+- [Ghost](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#Ghost)
 
 ## Things that don't work
 Everything seem to work for now
