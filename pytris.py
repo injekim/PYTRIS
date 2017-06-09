@@ -436,7 +436,7 @@ while not done:
             if event.type == QUIT:
                 done = True
             elif event.type == USEREVENT:
-                pygame.time.set_timer(pygame.USEREVENT, framerate * 10)
+                pygame.time.set_timer(pygame.USEREVENT, 300)
                 over_text_1 = ui_variables.h2_b.render("GAME", 1, ui_variables.white)
                 over_text_2 = ui_variables.h2_b.render("OVER", 1, ui_variables.white)
                 over_start = ui_variables.h5.render("Press esc to continue", 1, ui_variables.white)
@@ -478,7 +478,7 @@ while not done:
             if event.type == QUIT:
                 done = True
             elif event.type == USEREVENT:
-                pygame.time.set_timer(pygame.USEREVENT, framerate * 10)
+                pygame.time.set_timer(pygame.USEREVENT, 300)
                 screen.fill(ui_variables.white)
                 pygame.draw.rect(
                     screen,
