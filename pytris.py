@@ -383,6 +383,10 @@ while not done:
                     if is_turnable(dx, dy, mino, rotation):
                         ui_variables.move_sound.play()
                         rotation += 1
+                    elif is_turnable(dx, dy - 1, mino, rotation):
+                        ui_variables.move_sound.play()
+                        dy -= 1
+                        rotation += 1
                     if rotation == 4:
                         rotation = 0
                 elif event.key == K_DOWN:
