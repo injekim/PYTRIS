@@ -296,7 +296,8 @@ while not done:
                 draw_board(next_mino, hold_mino, score, level, goal)
 
                 # Erase a mino
-                erase_mino(dx, dy, mino, rotation)
+                if not game_over:
+                    erase_mino(dx, dy, mino, rotation)
 
                 # Move mino down
                 if not is_bottom(dx, dy, mino, rotation):
