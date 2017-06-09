@@ -21,11 +21,16 @@ pygame.display.set_caption("PYTRIS™")
 class ui_variables:
     # Fonts
     font_path = "./assets/fonts/OpenSans-Light.ttf"
+    font_path_b = "./assets/fonts/OpenSans-Bold.ttf"
+
     h1 = pygame.font.Font(font_path, 50)
     h2 = pygame.font.Font(font_path, 30)
     h4 = pygame.font.Font(font_path, 20)
     h5 = pygame.font.Font(font_path, 13)
     h6 = pygame.font.Font(font_path, 10)
+
+    h1_b = pygame.font.Font(font_path_b, 50)
+    h2_b = pygame.font.Font(font_path_b, 30)
 
     # Sounds
     click_sound = pygame.mixer.Sound("assets/sounds/SFX_ButtonUp.wav")
@@ -279,12 +284,12 @@ while not done:
         if pause:
             draw_board(next_mino, hold_mino, score, level, goal)
 
-            pause_text = ui_variables.h2.render("PAUSED", 1, ui_variables.white)
+            pause_text = ui_variables.h2_b.render("PAUSED", 1, ui_variables.white)
             pause_start = ui_variables.h5.render("Press esc to continue", 1, ui_variables.white)
 
-            screen.blit(pause_text, (47, 100))
+            screen.blit(pause_text, (43, 100))
             if blink:
-                screen.blit(pause_start, (39, 160))
+                screen.blit(pause_start, (40, 160))
                 blink = False
             else:
                 blink = True
@@ -448,15 +453,15 @@ while not done:
                     hard_drop = False
                     matrix = [[0 for y in range(height + 1)] for x in range(width)]
 
-        over_text = ui_variables.h2.render("GAME OVER", 1, ui_variables.white)
+        over_text = ui_variables.h2_b.render("GAME OVER", 1, ui_variables.white)
         over_start = ui_variables.h5.render("Press space to continue", 1, ui_variables.white)
 
         if game_over:
             draw_board(next_mino, hold_mino, score, level, goal)
-            screen.blit(over_text, (20, 100))
+            screen.blit(over_text, (13, 100))
 
             if blink:
-                screen.blit(over_start, (32, 160))
+                screen.blit(over_start, (33, 160))
                 blink = False
             else:
                 blink = True
