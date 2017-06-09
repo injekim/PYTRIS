@@ -242,7 +242,7 @@ def is_stackable(mino):
     return True
 
 # Initial values
-blink = True
+blink = False
 start = False
 pause = False
 done = False
@@ -275,27 +275,25 @@ while not done:
         for event in pygame.event.get():
             if event.type == QUIT:
                 done = True
+            elif event.type == USEREVENT:
+                draw_board(next_mino, hold_mino, score, level, goal)
+
+                pause_text = ui_variables.h2_b.render("PAUSED", 1, ui_variables.white)
+                pause_start = ui_variables.h5.render("Press esc to continue", 1, ui_variables.white)
+
+                screen.blit(pause_text, (43, 100))
+                if blink:
+                    screen.blit(pause_start, (40, 160))
+                    blink = False
+                else:
+                    blink = True
+                pygame.display.update()
             elif event.type == KEYDOWN:
                 erase_mino(dx, dy, mino, rotation)
                 if event.key == K_ESCAPE:
-                    ui_variables.click_sound.play()
                     pause = False
-
-        if pause:
-            draw_board(next_mino, hold_mino, score, level, goal)
-
-            pause_text = ui_variables.h2_b.render("PAUSED", 1, ui_variables.white)
-            pause_start = ui_variables.h5.render("Press esc to continue", 1, ui_variables.white)
-
-            screen.blit(pause_text, (43, 100))
-            if blink:
-                screen.blit(pause_start, (40, 160))
-                blink = False
-            else:
-                blink = True
-
-        pygame.display.update()
-        clock.tick(3)
+                    ui_variables.click_sound.play()
+                    pygame.time.set_timer(pygame.USEREVENT, 8)
 
     # Game screen
     elif start:
@@ -304,7 +302,8 @@ while not done:
                 done = True
             elif event.type == USEREVENT:
                 # Set speed
-                pygame.time.set_timer(pygame.USEREVENT, framerate * 10)
+                if not game_over:
+                    pygame.time.set_timer(pygame.USEREVENT, framerate * 10)
 
                 # Draw a mino
                 draw_mino(dx, dy, mino, rotation)
@@ -335,6 +334,7 @@ while not done:
                         else:
                             start = False
                             game_over = True
+                            pygame.time.set_timer(pygame.USEREVENT, 8)
                     else:
                         bottom_count += 1
 
@@ -435,8 +435,25 @@ while not done:
         for event in pygame.event.get():
             if event.type == QUIT:
                 done = True
+            elif event.type == USEREVENT:
+                pygame.time.set_timer(pygame.USEREVENT, framerate * 10)
+                over_text_1 = ui_variables.h2_b.render("GAME", 1, ui_variables.white)
+                over_text_2 = ui_variables.h2_b.render("OVER", 1, ui_variables.white)
+                over_start = ui_variables.h5.render("Press esc to continue", 1, ui_variables.white)
+
+                draw_board(next_mino, hold_mino, score, level, goal)
+                screen.blit(over_text_1, (58, 80))
+                screen.blit(over_text_2, (62, 110))
+
+                if blink:
+                    screen.blit(over_start, (40, 170))
+                    blink = False
+                else:
+                    blink = True
+
+                pygame.display.update()
             elif event.type == KEYDOWN:
-                if event.key == K_SPACE:
+                if event.key == K_ESCAPE:
                     ui_variables.click_sound.play()
                     game_over = False
                     hold = False
@@ -445,6 +462,7 @@ while not done:
                     mino = randint(1, 7)
                     next_mino = randint(1, 7)
                     hold_mino = -1
+                    framerate = 30
                     score = 0
                     score = 0
                     level = 1
@@ -452,54 +470,38 @@ while not done:
                     bottom_count = 0
                     hard_drop = False
                     matrix = [[0 for y in range(height + 1)] for x in range(width)]
-
-        over_text = ui_variables.h2_b.render("GAME OVER", 1, ui_variables.white)
-        over_start = ui_variables.h5.render("Press space to continue", 1, ui_variables.white)
-
-        if game_over:
-            draw_board(next_mino, hold_mino, score, level, goal)
-            screen.blit(over_text, (13, 100))
-
-            if blink:
-                screen.blit(over_start, (33, 160))
-                blink = False
-            else:
-                blink = True
-
-            pygame.display.update()
-            clock.tick(3)
+                    pygame.time.set_timer(pygame.USEREVENT, 8)
 
     # Start screen
     else:
         for event in pygame.event.get():
             if event.type == QUIT:
                 done = True
+            elif event.type == USEREVENT:
+                pygame.time.set_timer(pygame.USEREVENT, framerate * 10)
+                screen.fill(ui_variables.white)
+                pygame.draw.rect(
+                    screen,
+                    ui_variables.grey_1,
+                    Rect(0, 187, 300, 187)
+                )
+
+                title = ui_variables.h1.render("PYTRIS™", 1, ui_variables.grey_1)
+                title_start = ui_variables.h5.render("Press space to start", 1, ui_variables.white)
+                title_info = ui_variables.h6.render("Copyright (c) 2017 Jason Kim All Rights Reserved.", 1, ui_variables.white)
+
+                if blink:
+                    screen.blit(title_start, (92, 195))
+                    blink = False
+                else:
+                    blink = True
+                screen.blit(title, (65, 120))
+                screen.blit(title_info, (40, 335))
+
+                pygame.display.update()
             elif event.type == KEYDOWN:
                 if event.key == K_SPACE:
                     ui_variables.click_sound.play()
                     start = True
-
-        screen.fill(ui_variables.white)
-        pygame.draw.rect(
-            screen,
-            ui_variables.grey_1,
-            Rect(0, 187, 300, 187)
-        )
-
-        title = ui_variables.h1.render("PYTRIS™", 1, ui_variables.grey_1)
-        title_start = ui_variables.h5.render("Press space to start", 1, ui_variables.white)
-        title_info = ui_variables.h6.render("Copyright (c) 2017 Jason Kim All Rights Reserved.", 1, ui_variables.white)
-
-        if blink:
-            screen.blit(title_start, (92, 195))
-            blink = False
-        else:
-            blink = True
-        screen.blit(title, (65, 120))
-        screen.blit(title_info, (40, 335))
-
-        if not start:
-            pygame.display.update()
-            clock.tick(3)
 
 pygame.quit()
