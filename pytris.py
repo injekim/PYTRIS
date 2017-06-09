@@ -89,7 +89,7 @@ def draw_board(next, hold, score, level, goal):
     for i in range(4):
         for j in range(4):
             dx = 220 + block_size * j
-            dy = 150 + block_size * i
+            dy = 140 + block_size * i
             if grid_n[i][j] != 0:
                 pygame.draw.rect(
                     screen,
@@ -128,11 +128,11 @@ def draw_board(next, hold, score, level, goal):
 
     # Place texts
     screen.blit(text_hold, (215, 14))
-    screen.blit(text_next, (215, 114))
-    screen.blit(text_score, (215, 214))
-    screen.blit(score_value, (220, 230))
-    screen.blit(text_level, (215, 264))
-    screen.blit(level_value, (220, 280))
+    screen.blit(text_next, (215, 104))
+    screen.blit(text_score, (215, 194))
+    screen.blit(score_value, (220, 210))
+    screen.blit(text_level, (215, 254))
+    screen.blit(level_value, (220, 270))
     screen.blit(text_goal, (215, 314))
     screen.blit(goal_value, (220, 330))
 
