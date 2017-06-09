@@ -303,7 +303,11 @@ while not done:
             elif event.type == USEREVENT:
                 # Set speed
                 if not game_over:
-                    pygame.time.set_timer(pygame.USEREVENT, framerate * 10)
+                    keys_pressed = pygame.key.get_pressed()
+                    if keys_pressed[K_DOWN]:
+                        pygame.time.set_timer(pygame.USEREVENT, framerate * 2)
+                    else:
+                        pygame.time.set_timer(pygame.USEREVENT, framerate * 10)
 
                 # Draw a mino
                 draw_mino(dx, dy, mino, rotation)
@@ -413,10 +417,6 @@ while not done:
                         rotation += 1
                     if rotation == 4:
                         rotation = 0
-                elif event.key == K_DOWN:
-                    if not is_bottom(dx, dy, mino, rotation):
-                        ui_variables.move_sound.play()
-                        dy += 1
                 elif event.key == K_LEFT:
                     if not is_leftedge(dx, dy, mino, rotation):
                         ui_variables.move_sound.play()
