@@ -270,17 +270,17 @@ while not done:
         for event in pygame.event.get():
             if event.type == QUIT:
                 done = True
-            elif event.type == USEREVENT:
-                draw_board(next_mino, hold_mino, score, level, goal)
-
-                pause_text = ui_variables.h2.render("PAUSED", 1, ui_variables.white)
-                screen.blit(pause_text, (47, 100))
-
-                pygame.display.update()
             elif event.type == KEYDOWN:
                 erase_mino(dx, dy, mino, rotation)
                 if event.key == K_ESCAPE:
                     pause = False
+
+        draw_board(next_mino, hold_mino, score, level, goal)
+
+        pause_text = ui_variables.h2.render("PAUSED", 1, ui_variables.white)
+        screen.blit(pause_text, (47, 100))
+
+        pygame.display.update()
 
     # Game screen
     elif start:
