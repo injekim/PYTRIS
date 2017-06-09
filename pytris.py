@@ -323,7 +323,7 @@ while not done:
 
                 # Create new mino
                 else:
-                    if hard_drop or bottom_count == 4:
+                    if hard_drop or bottom_count == 6:
                         hard_drop = False
                         bottom_count = 0
                         score += 10 * level
