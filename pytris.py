@@ -273,14 +273,24 @@ while not done:
             elif event.type == KEYDOWN:
                 erase_mino(dx, dy, mino, rotation)
                 if event.key == K_ESCAPE:
+                    ui_variables.click_sound.play()
                     pause = False
 
-        draw_board(next_mino, hold_mino, score, level, goal)
+        if pause:
+            draw_board(next_mino, hold_mino, score, level, goal)
 
-        pause_text = ui_variables.h2.render("PAUSED", 1, ui_variables.white)
-        screen.blit(pause_text, (47, 100))
+            pause_text = ui_variables.h2.render("PAUSED", 1, ui_variables.white)
+            pause_start = ui_variables.h5.render("Press esc to continue", 1, ui_variables.white)
+
+            screen.blit(pause_text, (47, 100))
+            if blink:
+                screen.blit(pause_start, (39, 160))
+                blink = False
+            else:
+                blink = True
 
         pygame.display.update()
+        clock.tick(3)
 
     # Game screen
     elif start:
@@ -360,6 +370,7 @@ while not done:
             elif event.type == KEYDOWN:
                 erase_mino(dx, dy, mino, rotation)
                 if event.key == K_ESCAPE:
+                    ui_variables.click_sound.play()
                     pause = True
                 elif event.key == K_SPACE:
                     ui_variables.drop_sound.play()
@@ -440,7 +451,7 @@ while not done:
         over_text = ui_variables.h2.render("GAME OVER", 1, ui_variables.white)
         over_start = ui_variables.h5.render("Press space to continue", 1, ui_variables.white)
 
-        if game_over == True:
+        if game_over:
             draw_board(next_mino, hold_mino, score, level, goal)
             screen.blit(over_text, (20, 100))
 
