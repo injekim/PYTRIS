@@ -239,6 +239,7 @@ def is_stackable(mino):
 # Initial values
 blink = True
 start = False
+pause = False
 done = False
 game_over = False
 
@@ -264,8 +265,25 @@ matrix = [[0 for y in range(height + 1)] for x in range(width)]
 ###########################################################
 
 while not done:
+    # Pause screen
+    if pause:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                done = True
+            elif event.type == USEREVENT:
+                draw_board(next_mino, hold_mino, score, level, goal)
+
+                pause_text = ui_variables.h2.render("PAUSED", 1, ui_variables.white)
+                screen.blit(pause_text, (47, 100))
+
+                pygame.display.update()
+            elif event.type == KEYDOWN:
+                erase_mino(dx, dy, mino, rotation)
+                if event.key == K_ESCAPE:
+                    pause = False
+
     # Game screen
-    if start:
+    elif start:
         for event in pygame.event.get():
             if event.type == QUIT:
                 done = True
@@ -340,12 +358,14 @@ while not done:
 
             elif event.type == KEYDOWN:
                 erase_mino(dx, dy, mino, rotation)
-                if event.key == K_SPACE:
+                if event.key == K_ESCAPE:
+                    pause = True
+                elif event.key == K_SPACE:
                     ui_variables.drop_sound.play()
                     while not is_bottom(dx, dy, mino, rotation):
                         dy += 1
                     hard_drop = True
-                    pygame.time.set_timer(pygame.USEREVENT, 5)
+                    pygame.time.set_timer(pygame.USEREVENT, 8)
                 elif event.key == K_LSHIFT:
                     if hold == False:
                         ui_variables.move_sound.play()

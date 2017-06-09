@@ -34,6 +34,7 @@ More on [How to play](https://github.com/k0626089/PYTRIS/wiki/How-to-play)
 - [Sound effects](https://github.com/k0626089/PYTRIS/wiki/Resources#sound-source)
 - [Game over when the board is full](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#game-over-when-the-board-is-full)
 - [Ghost](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#Ghost)
+- [Pause](https://github.com/k0626089/PYTRIS/wiki/Things-that-work#pause)
 
 ## Things that don't work
 Everything seem to work for now
@@ -41,7 +42,6 @@ Everything seem to work for now
 ## Future plans
 - [T-spin](https://github.com/k0626089/PYTRIS/wiki/Future-plans#t-spin-support)
 - [High score system](https://github.com/k0626089/PYTRIS/wiki/Future-plans#high-score-system)
-- [Pause](https://github.com/k0626089/PYTRIS/wiki/Future-plans#pause)
 
 ## Screenshots
 <img src="assets/images/title.png" width="300">
