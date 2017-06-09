@@ -12,6 +12,7 @@ tetris made with pygame
 | Soft drop    | Down arrow  |
 | Hard drop    | Space       |
 | Hold block   | Left shift  |
+| Pause game   | Esc         |
 
 More on [How to play](https://github.com/k0626089/PYTRIS/wiki/How-to-play)
 
