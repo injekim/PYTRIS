@@ -393,13 +393,11 @@ while not done:
                         if hold_mino == -1:
                             hold_mino = mino
                             mino = next_mino
-                            dx, dy = 3, 0
-                            rotation = 0
                             next_mino = randint(1, 7)
                         else:
                             hold_mino, mino = mino, hold_mino
-                            dx, dy = 3, 0
-                            rotation = 0
+                        dx, dy = 3, 0
+                        rotation = 0
                         hold = True
                 elif event.key == K_UP:
                     if is_turnable(dx, dy, mino, rotation):
