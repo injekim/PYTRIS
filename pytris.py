@@ -276,6 +276,8 @@ while not done:
             if event.type == QUIT:
                 done = True
             elif event.type == USEREVENT:
+                pygame.time.set_timer(pygame.USEREVENT, 300)
+                
                 draw_board(next_mino, hold_mino, score, level, goal)
 
                 pause_text = ui_variables.h2_b.render("PAUSED", 1, ui_variables.white)
@@ -387,6 +389,8 @@ while not done:
                         dy += 1
                     hard_drop = True
                     pygame.time.set_timer(pygame.USEREVENT, 8)
+                    draw_mino(dx, dy, mino, rotation)
+                    draw_board(next_mino, hold_mino, score, level, goal)
                 elif event.key == K_LSHIFT:
                     if hold == False:
                         ui_variables.move_sound.play()
@@ -399,6 +403,8 @@ while not done:
                         dx, dy = 3, 0
                         rotation = 0
                         hold = True
+                    draw_mino(dx, dy, mino, rotation)
+                    draw_board(next_mino, hold_mino, score, level, goal)
                 elif event.key == K_UP:
                     if is_turnable(dx, dy, mino, rotation):
                         ui_variables.move_sound.play()
@@ -417,16 +423,20 @@ while not done:
                         rotation += 1
                     if rotation == 4:
                         rotation = 0
+                    draw_mino(dx, dy, mino, rotation)
+                    draw_board(next_mino, hold_mino, score, level, goal)
                 elif event.key == K_LEFT:
                     if not is_leftedge(dx, dy, mino, rotation):
                         ui_variables.move_sound.play()
                         dx -= 1
+                    draw_mino(dx, dy, mino, rotation)
+                    draw_board(next_mino, hold_mino, score, level, goal)
                 elif event.key == K_RIGHT:
                     if not is_rightedge(dx, dy, mino, rotation):
                         ui_variables.move_sound.play()
                         dx += 1
-                draw_mino(dx, dy, mino, rotation)
-                draw_board(next_mino, hold_mino, score, level, goal)
+                    draw_mino(dx, dy, mino, rotation)
+                    draw_board(next_mino, hold_mino, score, level, goal)
 
         pygame.display.update()
 
