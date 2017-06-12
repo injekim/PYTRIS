@@ -1,7 +1,7 @@
 # PYTRIS™
 tetris made with pygame
 
-<img src="assets/images/gameplay2.gif" width="250">
+<img src="assets/images/gameplay.gif" width="250">
 
 ## How to play
 | Command      | Key         |
@@ -47,6 +47,7 @@ Everything seem to work for now
 ## Screenshots
 <img src="assets/images/title.png" width="300">
 <img src="assets/images/gameplay.png" width="300">
+<img src="assets/images/paused.png" width="300">
 <img src="assets/images/gameover.png" width="300">
 
 More informations on [PYTRIS™ Wiki](https://github.com/k0626089/PYTRIS/wiki)
