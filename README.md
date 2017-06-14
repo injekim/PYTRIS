@@ -9,16 +9,16 @@ tetris made with pygame
 <img src="assets/images/gameplay_1.gif" width="250">
 
 ## How to play
-| Command      | Key         |
-|--------------|-------------|
-| Move left    | Left arrow  |
-| Move right   | Right arrow |
-| Rotate right | Up arrow    |
-| Rotate left  | Z           |
-| Soft drop    | Down arrow  |
-| Hard drop    | Space       |
-| Hold block   | Left shift  |
-| Pause game   | Esc         |
+| Command      | Key           |
+|--------------|---------------|
+| Move left    | Left          |
+| Move right   | Right         |
+| Rotate right | Up or X       |
+| Rotate left  | Left ctrl / Z |
+| Soft drop    | Down arrow    |
+| Hard drop    | Space         |
+| Hold block   | Left shift / C|
+| Pause game   | Esc           |
 
 More on [How to play](https://github.com/k0626089/PYTRIS/wiki/How-to-play)
 
