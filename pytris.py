@@ -214,11 +214,27 @@ def is_rightedge(x, y, mino, r):
 
     return False
 
-def is_turnable(x, y, mino, r):
+def is_turnable_r(x, y, mino, r):
     if r != 3:
         grid = tetrimino.mino_map[mino - 1][r + 1]
     else:
         grid = tetrimino.mino_map[mino - 1][0]
+
+    for i in range(4):
+        for j in range(4):
+            if grid[i][j] != 0:
+                if (x + j) < 0 or (x + j) > 9 or (y + i) < 0 or (y + i) > 20:
+                    return False
+                elif matrix[x + j][y + i] != 0:
+                    return False
+
+    return True
+
+def is_turnable_l(x, y, mino, r):
+    if r != 0:
+        grid = tetrimino.mino_map[mino - 1][r - 1]
+    else:
+        grid = tetrimino.mino_map[mino - 1][3]
 
     for i in range(4):
         for j in range(4):
@@ -406,23 +422,66 @@ while not done:
                     draw_mino(dx, dy, mino, rotation)
                     draw_board(next_mino, hold_mino, score, level, goal)
                 elif event.key == K_UP:
-                    if is_turnable(dx, dy, mino, rotation):
+                    if is_turnable_r(dx, dy, mino, rotation):
                         ui_variables.move_sound.play()
                         rotation += 1
-                    elif is_turnable(dx, dy - 1, mino, rotation):
+                    elif is_turnable_r(dx, dy - 1, mino, rotation):
                         ui_variables.move_sound.play()
                         dy -= 1
                         rotation += 1
-                    elif is_turnable(dx + 1, dy, mino, rotation):
+                    elif is_turnable_r(dx + 1, dy, mino, rotation):
                         ui_variables.move_sound.play()
                         dx += 1
                         rotation += 1
-                    elif is_turnable(dx - 1, dy, mino, rotation):
+                    elif is_turnable_r(dx - 1, dy, mino, rotation):
                         ui_variables.move_sound.play()
                         dx -= 1
                         rotation += 1
+                    elif is_turnable_r(dx, dy - 2, mino, rotation):
+                        ui_variables.move_sound.play()
+                        dy -= 2
+                        rotation += 1
+                    elif is_turnable_r(dx + 2, dy, mino, rotation):
+                        ui_variables.move_sound.play()
+                        dx += 2
+                        rotation += 1
+                    elif is_turnable_r(dx - 2, dy, mino, rotation):
+                        ui_variables.move_sound.play()
+                        dx -= 2
+                        rotation += 1
                     if rotation == 4:
                         rotation = 0
+                    draw_mino(dx, dy, mino, rotation)
+                    draw_board(next_mino, hold_mino, score, level, goal)
+                elif event.key == K_z:
+                    if is_turnable_l(dx, dy, mino, rotation):
+                        ui_variables.move_sound.play()
+                        rotation -= 1
+                    elif is_turnable_l(dx, dy - 1, mino, rotation):
+                        ui_variables.move_sound.play()
+                        dy -= 1
+                        rotation -= 1
+                    elif is_turnable_l(dx + 1, dy, mino, rotation):
+                        ui_variables.move_sound.play()
+                        dx += 1
+                        rotation -= 1
+                    elif is_turnable_l(dx - 1, dy, mino, rotation):
+                        ui_variables.move_sound.play()
+                        dx -= 1
+                        rotation -= 1
+                    elif is_turnable_l(dx, dy - 2, mino, rotation):
+                        ui_variables.move_sound.play()
+                        dy -= 2
+                        rotation += 1
+                    elif is_turnable_l(dx + 2, dy, mino, rotation):
+                        ui_variables.move_sound.play()
+                        dx += 2
+                        rotation += 1
+                    elif is_turnable_l(dx - 2, dy, mino, rotation):
+                        ui_variables.move_sound.play()
+                        dx -= 2
+                    if rotation == -1:
+                        rotation = 3
                     draw_mino(dx, dy, mino, rotation)
                     draw_board(next_mino, hold_mino, score, level, goal)
                 elif event.key == K_LEFT:
