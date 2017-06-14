@@ -6,7 +6,7 @@
 
 tetris made with pygame
 
-<img src="assets/images/gameplay_1.gif" width="250">
+<img src="assets/images/gameplay.gif" width="250">
 
 ## How to play
 | Command      | Key           |
@@ -51,9 +51,9 @@ Everything seem to work for now
 - [High score system](https://github.com/k0626089/PYTRIS/wiki/Future-plans#high-score-system)
 
 ## Screenshots
-<img src="assets/images/title.png" width="300">
+<img src="assets/images/startscreen.png" width="300">
 <img src="assets/images/gameplay.png" width="300">
 <img src="assets/images/paused.png" width="300">
-<img src="assets/images/gameover.png" width="300">
+<img src="assets/images/gameover_1.png" width="300">
 
 More informations on [PYTRIS™ Wiki](https://github.com/k0626089/PYTRIS/wiki)
