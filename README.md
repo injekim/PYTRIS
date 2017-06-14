@@ -14,6 +14,7 @@ tetris made with pygame
 | Move left    | Left arrow  |
 | Move right   | Right arrow |
 | Rotate right | Up arrow    |
+| Rotate left  | Z           |
 | Soft drop    | Down arrow  |
 | Hard drop    | Space       |
 | Hold block   | Left shift  |
