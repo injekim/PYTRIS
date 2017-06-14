@@ -276,7 +276,7 @@ blink = False
 start = False
 pause = False
 done = False
-game_over = True
+game_over = False
 
 score = 0
 level = 1
