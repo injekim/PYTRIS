@@ -277,7 +277,7 @@ while not done:
                 done = True
             elif event.type == USEREVENT:
                 pygame.time.set_timer(pygame.USEREVENT, 300)
-                
+
                 draw_board(next_mino, hold_mino, score, level, goal)
 
                 pause_text = ui_variables.h2_b.render("PAUSED", 1, ui_variables.white)
@@ -487,31 +487,31 @@ while not done:
         for event in pygame.event.get():
             if event.type == QUIT:
                 done = True
-            elif event.type == USEREVENT:
-                pygame.time.set_timer(pygame.USEREVENT, 300)
-                screen.fill(ui_variables.white)
-                pygame.draw.rect(
-                    screen,
-                    ui_variables.grey_1,
-                    Rect(0, 187, 300, 187)
-                )
-
-                title = ui_variables.h1.render("PYTRIS™", 1, ui_variables.grey_1)
-                title_start = ui_variables.h5.render("Press space to start", 1, ui_variables.white)
-                title_info = ui_variables.h6.render("Copyright (c) 2017 Jason Kim All Rights Reserved.", 1, ui_variables.white)
-
-                if blink:
-                    screen.blit(title_start, (92, 195))
-                    blink = False
-                else:
-                    blink = True
-                screen.blit(title, (65, 120))
-                screen.blit(title_info, (40, 335))
-
-                pygame.display.update()
             elif event.type == KEYDOWN:
                 if event.key == K_SPACE:
                     ui_variables.click_sound.play()
                     start = True
+
+            pygame.time.set_timer(pygame.USEREVENT, 300)
+            screen.fill(ui_variables.white)
+            pygame.draw.rect(
+                screen,
+                ui_variables.grey_1,
+                Rect(0, 187, 300, 187)
+            )
+
+            title = ui_variables.h1.render("PYTRIS™", 1, ui_variables.grey_1)
+            title_start = ui_variables.h5.render("Press space to start", 1, ui_variables.white)
+            title_info = ui_variables.h6.render("Copyright (c) 2017 Jason Kim All Rights Reserved.", 1, ui_variables.white)
+
+            if blink:
+                screen.blit(title_start, (92, 195))
+                blink = False
+            else:
+                blink = True
+            screen.blit(title, (65, 120))
+            screen.blit(title_info, (40, 335))
+
+            pygame.display.update()
 
 pygame.quit()
