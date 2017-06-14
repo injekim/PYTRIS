@@ -13,7 +13,7 @@ tetris made with pygame
 |--------------|---------------|
 | Move left    | Left          |
 | Move right   | Right         |
-| Rotate right | Up or X       |
+| Rotate right | Up / X        |
 | Rotate left  | Left ctrl / Z |
 | Soft drop    | Down arrow    |
 | Hard drop    | Space         |
