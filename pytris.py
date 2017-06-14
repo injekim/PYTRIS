@@ -302,7 +302,7 @@ with open('leaderboard.txt') as f:
     lines = f.readlines()
 lines = [line.rstrip('\n') for line in open('leaderboard.txt')]
 
-leaders = {}
+leaders = {'AAA': 0, 'BBB': 0, 'CCC': 0}
 for i in lines:
     leaders[i.split(' ')[0]] = int(i.split(' ')[1])
 leaders = sorted(leaders.items(), key=operator.itemgetter(1), reverse=True)
@@ -599,6 +599,15 @@ while not done:
                     name_location = 0
                     name = [65, 65, 65]
                     matrix = [[0 for y in range(height + 1)] for x in range(width)]
+
+                    with open('leaderboard.txt') as f:
+                        lines = f.readlines()
+                    lines = [line.rstrip('\n') for line in open('leaderboard.txt')]
+
+                    leaders = {'AAA': 0, 'BBB': 0, 'CCC': 0}
+                    for i in lines:
+                        leaders[i.split(' ')[0]] = int(i.split(' ')[1])
+                    leaders = sorted(leaders.items(), key=operator.itemgetter(1), reverse=True)
 
                     pygame.time.set_timer(pygame.USEREVENT, 1)
                 elif event.key == K_RIGHT:
