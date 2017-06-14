@@ -1,4 +1,7 @@
 # PYTRIS™
+[![GitHub release](https://img.shields.io/badge/release-v1.67-blue.svg)](https://github.com/k0626089/PYTRIS/releases/tag/v1.67)
+[![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://github.com/k0626089/PYTRIS/blob/master/LICENSE)
+
 tetris made with pygame
 
 <img src="assets/images/gameplay.gif" width="250">
