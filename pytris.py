@@ -1,6 +1,7 @@
 # PYTRIS™ Copyright (c) 2017 Jason Kim All Rights Reserved.
 
 import pygame
+import operator
 from mino import *
 from random import *
 from pygame.locals import *
@@ -34,6 +35,7 @@ class ui_variables:
     h2_b = pygame.font.Font(font_path_b, 30)
 
     h2_i = pygame.font.Font(font_path_i, 30)
+    h5_i = pygame.font.Font(font_path_i, 13)
 
     # Sounds
     click_sound = pygame.mixer.Sound("assets/sounds/SFX_ButtonUp.wav")
@@ -295,6 +297,15 @@ hold_mino = -1 # Holded mino
 
 name_location = 0
 name = [65, 65, 65]
+
+with open('leaderboard.txt') as f:
+    lines = f.readlines()
+lines = [line.rstrip('\n') for line in open('leaderboard.txt')]
+
+leaders = {}
+for i in lines:
+    leaders[i.split(' ')[0]] = int(i.split(' ')[1])
+leaders = sorted(leaders.items(), key=operator.itemgetter(1), reverse=True)
 
 matrix = [[0 for y in range(height + 1)] for x in range(width)] # Board matrix
 
@@ -639,13 +650,22 @@ while not done:
         title_start = ui_variables.h5.render("Press space to start", 1, ui_variables.white)
         title_info = ui_variables.h6.render("Copyright (c) 2017 Jason Kim All Rights Reserved.", 1, ui_variables.white)
 
+        leader_1 = ui_variables.h5_i.render('1st ' + leaders[0][0] + ' ' + str(leaders[0][1]), 1, ui_variables.grey_1)
+        leader_2 = ui_variables.h5_i.render('2nd ' + leaders[1][0] + ' ' + str(leaders[1][1]), 1, ui_variables.grey_1)
+        leader_3 = ui_variables.h5_i.render('3rd ' + leaders[2][0] + ' ' + str(leaders[2][1]), 1, ui_variables.grey_1)
+
         if blink:
             screen.blit(title_start, (92, 195))
             blink = False
         else:
             blink = True
+
         screen.blit(title, (65, 120))
         screen.blit(title_info, (40, 335))
+
+        screen.blit(leader_1, (10, 10))
+        screen.blit(leader_2, (10, 23))
+        screen.blit(leader_3, (10, 36))
 
         if not start:
             pygame.display.update()
