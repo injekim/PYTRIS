@@ -22,6 +22,7 @@ class ui_variables:
     # Fonts
     font_path = "./assets/fonts/OpenSans-Light.ttf"
     font_path_b = "./assets/fonts/OpenSans-Bold.ttf"
+    font_path_i = "./assets/fonts/Inconsolata/Inconsolata.otf"
 
     h1 = pygame.font.Font(font_path, 50)
     h2 = pygame.font.Font(font_path, 30)
@@ -31,6 +32,8 @@ class ui_variables:
 
     h1_b = pygame.font.Font(font_path_b, 50)
     h2_b = pygame.font.Font(font_path_b, 30)
+
+    h2_i = pygame.font.Font(font_path_i, 30)
 
     # Sounds
     click_sound = pygame.mixer.Sound("assets/sounds/SFX_ButtonUp.wav")
@@ -273,7 +276,7 @@ blink = False
 start = False
 pause = False
 done = False
-game_over = False
+game_over = True
 
 score = 0
 level = 1
@@ -289,6 +292,9 @@ next_mino = randint(1, 7) # Next mino
 
 hold = False # Hold status
 hold_mino = -1 # Holded mino
+
+name_location = 0
+name = [65, 65, 65]
 
 matrix = [[0 for y in range(height + 1)] for x in range(width)] # Board matrix
 
@@ -321,7 +327,7 @@ while not done:
                 if event.key == K_ESCAPE:
                     pause = False
                     ui_variables.click_sound.play()
-                    pygame.time.set_timer(pygame.USEREVENT, 8)
+                    pygame.time.set_timer(pygame.USEREVENT, 1)
 
     # Game screen
     elif start:
@@ -366,7 +372,7 @@ while not done:
                         else:
                             start = False
                             game_over = True
-                            pygame.time.set_timer(pygame.USEREVENT, 8)
+                            pygame.time.set_timer(pygame.USEREVENT, 1)
                     else:
                         bottom_count += 1
 
@@ -415,7 +421,7 @@ while not done:
                     while not is_bottom(dx, dy, mino, rotation):
                         dy += 1
                     hard_drop = True
-                    pygame.time.set_timer(pygame.USEREVENT, 8)
+                    pygame.time.set_timer(pygame.USEREVENT, 1)
                     draw_mino(dx, dy, mino, rotation)
                     draw_board(next_mino, hold_mino, score, level, goal)
                 # Hold
@@ -526,22 +532,45 @@ while not done:
                 pygame.time.set_timer(pygame.USEREVENT, 300)
                 over_text_1 = ui_variables.h2_b.render("GAME", 1, ui_variables.white)
                 over_text_2 = ui_variables.h2_b.render("OVER", 1, ui_variables.white)
-                over_start = ui_variables.h5.render("Press esc to continue", 1, ui_variables.white)
+                over_start = ui_variables.h5.render("Press return to continue", 1, ui_variables.white)
 
                 draw_board(next_mino, hold_mino, score, level, goal)
-                screen.blit(over_text_1, (58, 80))
-                screen.blit(over_text_2, (62, 110))
+                screen.blit(over_text_1, (58, 75))
+                screen.blit(over_text_2, (62, 105))
+
+                name_1 = ui_variables.h2_i.render(chr(name[0]), 1, ui_variables.white)
+                name_2 = ui_variables.h2_i.render(chr(name[1]), 1, ui_variables.white)
+                name_3 = ui_variables.h2_i.render(chr(name[2]), 1, ui_variables.white)
+
+                underbar_1 = ui_variables.h2.render("_", 1, ui_variables.white)
+                underbar_2 = ui_variables.h2.render("_", 1, ui_variables.white)
+                underbar_3 = ui_variables.h2.render("_", 1, ui_variables.white)
+
+                screen.blit(name_1, (65, 147))
+                screen.blit(name_2, (95, 147))
+                screen.blit(name_3, (125, 147))
 
                 if blink:
-                    screen.blit(over_start, (40, 170))
+                    screen.blit(over_start, (32, 195))
                     blink = False
                 else:
+                    if name_location == 0:
+                        screen.blit(underbar_1, (65, 145))
+                    elif name_location == 1:
+                        screen.blit(underbar_2, (95, 145))
+                    elif name_location == 2:
+                        screen.blit(underbar_3, (125, 145))
                     blink = True
 
                 pygame.display.update()
             elif event.type == KEYDOWN:
-                if event.key == K_ESCAPE:
+                if event.key == K_RETURN:
                     ui_variables.click_sound.play()
+
+                    outfile = open('leaderboard.txt','a')
+                    outfile.write(chr(name[0]) + chr(name[1]) + chr(name[2]) + ' ' + str(score) + '\n')
+                    outfile.close()
+
                     game_over = False
                     hold = False
                     dx, dy = 3, 0
@@ -556,8 +585,37 @@ while not done:
                     goal = level * 5
                     bottom_count = 0
                     hard_drop = False
+                    name_location = 0
+                    name = [65, 65, 65]
                     matrix = [[0 for y in range(height + 1)] for x in range(width)]
-                    pygame.time.set_timer(pygame.USEREVENT, 8)
+
+                    pygame.time.set_timer(pygame.USEREVENT, 1)
+                elif event.key == K_RIGHT:
+                    if name_location != 2:
+                        name_location += 1
+                    else:
+                        name_location = 0
+                    pygame.time.set_timer(pygame.USEREVENT, 1)
+                elif event.key == K_LEFT:
+                    if name_location != 0:
+                        name_location -= 1
+                    else:
+                        name_location = 2
+                    pygame.time.set_timer(pygame.USEREVENT, 1)
+                elif event.key == K_UP:
+                    ui_variables.click_sound.play()
+                    if name[name_location] != 90:
+                        name[name_location] += 1
+                    else:
+                        name[name_location] = 65
+                    pygame.time.set_timer(pygame.USEREVENT, 1)
+                elif event.key == K_DOWN:
+                    ui_variables.click_sound.play()
+                    if name[name_location] != 65:
+                        name[name_location] -= 1
+                    else:
+                        name[name_location] = 90
+                    pygame.time.set_timer(pygame.USEREVENT, 1)
 
     # Start screen
     else:
@@ -569,26 +627,28 @@ while not done:
                     ui_variables.click_sound.play()
                     start = True
 
-            pygame.time.set_timer(pygame.USEREVENT, 300)
-            screen.fill(ui_variables.white)
-            pygame.draw.rect(
-                screen,
-                ui_variables.grey_1,
-                Rect(0, 187, 300, 187)
-            )
+        # pygame.time.set_timer(pygame.USEREVENT, 300)
+        screen.fill(ui_variables.white)
+        pygame.draw.rect(
+            screen,
+            ui_variables.grey_1,
+            Rect(0, 187, 300, 187)
+        )
 
-            title = ui_variables.h1.render("PYTRIS™", 1, ui_variables.grey_1)
-            title_start = ui_variables.h5.render("Press space to start", 1, ui_variables.white)
-            title_info = ui_variables.h6.render("Copyright (c) 2017 Jason Kim All Rights Reserved.", 1, ui_variables.white)
+        title = ui_variables.h1.render("PYTRIS™", 1, ui_variables.grey_1)
+        title_start = ui_variables.h5.render("Press space to start", 1, ui_variables.white)
+        title_info = ui_variables.h6.render("Copyright (c) 2017 Jason Kim All Rights Reserved.", 1, ui_variables.white)
 
-            if blink:
-                screen.blit(title_start, (92, 195))
-                blink = False
-            else:
-                blink = True
-            screen.blit(title, (65, 120))
-            screen.blit(title_info, (40, 335))
+        if blink:
+            screen.blit(title_start, (92, 195))
+            blink = False
+        else:
+            blink = True
+        screen.blit(title, (65, 120))
+        screen.blit(title_info, (40, 335))
 
+        if not start:
             pygame.display.update()
+            clock.tick(3)
 
 pygame.quit()
