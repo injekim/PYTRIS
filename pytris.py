@@ -59,7 +59,7 @@ class ui_variables:
 
     t_color = [grey_2, cyan, blue, orange, yellow, green, pink, red, grey_3]
 
-# Draw single block
+# Draw block
 def draw_block(x, y, color):
     pygame.draw.rect(
         screen,
@@ -77,6 +77,7 @@ def draw_block(x, y, color):
 def draw_board(next, hold, score, level, goal):
     screen.fill(ui_variables.grey_1)
 
+    # Draw sidebar
     pygame.draw.rect(
         screen,
         ui_variables.white,
@@ -151,11 +152,13 @@ def draw_mino(x, y, mino, r):
     while not is_bottom(tx, ty, mino, r):
         ty += 1
 
+    # Draw ghost
     for i in range(4):
         for j in range(4):
             if grid[i][j] != 0:
                 matrix[tx + j][ty + i] = 8
 
+    # Draw mino
     for i in range(4):
         for j in range(4):
             if grid[i][j] != 0:
@@ -165,16 +168,19 @@ def draw_mino(x, y, mino, r):
 def erase_mino(x, y, mino, r):
     grid = tetrimino.mino_map[mino - 1][r]
 
+    # Erase ghost
     for j in range(21):
         for i in range(10):
             if matrix[i][j] == 8:
                 matrix[i][j] = 0
 
+    # Erase mino
     for i in range(4):
         for j in range(4):
             if grid[i][j] != 0:
                 matrix[x + j][y + i] = 0
 
+# Returns true if mino is at bottom
 def is_bottom(x, y, mino, r):
     grid = tetrimino.mino_map[mino - 1][r]
 
@@ -188,6 +194,7 @@ def is_bottom(x, y, mino, r):
 
     return False
 
+# Returns true if mino is at the left edge
 def is_leftedge(x, y, mino, r):
     grid = tetrimino.mino_map[mino - 1][r]
 
@@ -201,6 +208,7 @@ def is_leftedge(x, y, mino, r):
 
     return False
 
+# Returns true if mino is at the right edge
 def is_rightedge(x, y, mino, r):
     grid = tetrimino.mino_map[mino - 1][r]
 
@@ -214,6 +222,7 @@ def is_rightedge(x, y, mino, r):
 
     return False
 
+# Returns true if turning right is possible
 def is_turnable_r(x, y, mino, r):
     if r != 3:
         grid = tetrimino.mino_map[mino - 1][r + 1]
@@ -230,6 +239,7 @@ def is_turnable_r(x, y, mino, r):
 
     return True
 
+# Returns true if turning left is possible
 def is_turnable_l(x, y, mino, r):
     if r != 0:
         grid = tetrimino.mino_map[mino - 1][r - 1]
@@ -246,6 +256,7 @@ def is_turnable_l(x, y, mino, r):
 
     return True
 
+# Returns true if new block is drawable
 def is_stackable(mino):
     grid = tetrimino.mino_map[mino - 1][0]
 
@@ -270,16 +281,16 @@ goal = level * 5
 bottom_count = 0
 hard_drop = False
 
-dx, dy = 3, 0
-rotation = 0
+dx, dy = 3, 0 # Minos location status
+rotation = 0 # Minos rotation status
 
-mino = randint(1, 7)
-next_mino = randint(1, 7)
+mino = randint(1, 7) # Current mino
+next_mino = randint(1, 7) # Next mino
 
-hold = False
-hold_mino = -1
+hold = False # Hold status
+hold_mino = -1 # Holded mino
 
-matrix = [[0 for y in range(height + 1)] for x in range(width)]
+matrix = [[0 for y in range(height + 1)] for x in range(width)] # Board matrix
 
 ###########################################################
 # Loop Start
@@ -293,7 +304,6 @@ while not done:
                 done = True
             elif event.type == USEREVENT:
                 pygame.time.set_timer(pygame.USEREVENT, 300)
-
                 draw_board(next_mino, hold_mino, score, level, goal)
 
                 pause_text = ui_variables.h2_b.render("PAUSED", 1, ui_variables.white)
@@ -399,6 +409,7 @@ while not done:
                 if event.key == K_ESCAPE:
                     ui_variables.click_sound.play()
                     pause = True
+                # Hard drop
                 elif event.key == K_SPACE:
                     ui_variables.drop_sound.play()
                     while not is_bottom(dx, dy, mino, rotation):
@@ -407,6 +418,7 @@ while not done:
                     pygame.time.set_timer(pygame.USEREVENT, 8)
                     draw_mino(dx, dy, mino, rotation)
                     draw_board(next_mino, hold_mino, score, level, goal)
+                # Hold
                 elif event.key == K_LSHIFT or event.key == K_c:
                     if hold == False:
                         ui_variables.move_sound.play()
@@ -421,10 +433,12 @@ while not done:
                         hold = True
                     draw_mino(dx, dy, mino, rotation)
                     draw_board(next_mino, hold_mino, score, level, goal)
+                # Turn right
                 elif event.key == K_UP or event.key == K_x:
                     if is_turnable_r(dx, dy, mino, rotation):
                         ui_variables.move_sound.play()
                         rotation += 1
+                    # Kick
                     elif is_turnable_r(dx, dy - 1, mino, rotation):
                         ui_variables.move_sound.play()
                         dy -= 1
@@ -453,10 +467,12 @@ while not done:
                         rotation = 0
                     draw_mino(dx, dy, mino, rotation)
                     draw_board(next_mino, hold_mino, score, level, goal)
+                # Turn left
                 elif event.key == K_z or event.key == K_LCTRL:
                     if is_turnable_l(dx, dy, mino, rotation):
                         ui_variables.move_sound.play()
                         rotation -= 1
+                    # Kick
                     elif is_turnable_l(dx, dy - 1, mino, rotation):
                         ui_variables.move_sound.play()
                         dy -= 1
@@ -484,12 +500,14 @@ while not done:
                         rotation = 3
                     draw_mino(dx, dy, mino, rotation)
                     draw_board(next_mino, hold_mino, score, level, goal)
+                # Move left
                 elif event.key == K_LEFT:
                     if not is_leftedge(dx, dy, mino, rotation):
                         ui_variables.move_sound.play()
                         dx -= 1
                     draw_mino(dx, dy, mino, rotation)
                     draw_board(next_mino, hold_mino, score, level, goal)
+                # Move right
                 elif event.key == K_RIGHT:
                     if not is_rightedge(dx, dy, mino, rotation):
                         ui_variables.move_sound.play()
