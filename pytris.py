@@ -323,7 +323,7 @@ while not done:
                 if not game_over:
                     keys_pressed = pygame.key.get_pressed()
                     if keys_pressed[K_DOWN]:
-                        pygame.time.set_timer(pygame.USEREVENT, framerate * 2)
+                        pygame.time.set_timer(pygame.USEREVENT, framerate * 1)
                     else:
                         pygame.time.set_timer(pygame.USEREVENT, framerate * 10)
 
