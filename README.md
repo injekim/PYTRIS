@@ -3,6 +3,7 @@
 [![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://github.com/k0626089/PYTRIS/blob/master/LICENSE)
 [![Python version](https://img.shields.io/badge/python-3.5.2-brightgreen.svg)](https://www.python.org)
 [![Pygame version](https://img.shields.io/badge/pygame-1.9.3-yellow.svg)](http://pygame.org)
+[![Donate](https://img.shields.io/badge/donate-PayPal-0A3683.svg)](https://www.paypal.me/InjeKim)
 
 tetris made with pygame
 
